@@ -31,6 +31,7 @@
 	},
 	"type": "module",
 	"dependencies": {
+		"@directus/sdk": "^11.0.2",
 		"cmds-tailwind-styles": "^1.1.6"
 	}
 }
