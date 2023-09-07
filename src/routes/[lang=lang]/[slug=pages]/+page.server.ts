@@ -1,7 +1,5 @@
 import { PUBLIC_LANGUAGE_COOKIE, PUBLIC_LANGUAGE_COOKIE_MAX_AGE } from '$env/static/public';
 import { error } from '@sveltejs/kit';
-import getPageContent from '$lib/server/directus-page-content.js';
-import { SITE_ID } from '$env/static/private';
 
 /** @type {import('./$types').PageServerLoad} */
 export async function load({ params, cookies, locals, request }) {
@@ -27,8 +25,7 @@ export async function load({ params, cookies, locals, request }) {
 		});
 	}
 
-	const pageContent = await getPageContent(SITE_ID, 'home', 'gs', paramsLanguage);
+	// Get the page content and render
 
-	// Get the homepage content and render
-	return { pageContent };
+	return {};
 }

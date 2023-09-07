@@ -5,6 +5,7 @@ declare global {
 		// interface Error {}
 		interface Locals {
 			browserLanguage: string[];
+			supportedLanguages: string[];
 		}
 		// interface PageData {}
 		// interface Platform {}
