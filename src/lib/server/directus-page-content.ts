@@ -15,19 +15,29 @@ export default async (
 
 	client.setToken(CMS_TOKEN);
 
-	console.log('language', language);
-
 	const pageRequestResult = await client
 		.request(
 			readItems(PAGES_COLLECTION, {
 				fields: [
 					'name',
 					'dataLayer_load_data',
-					{ language_settings: ['title_tag', 'meta_description', 'lang_code'] },
+					{ language_settings: ['title_tag', 'meta_description'] },
 					'redirect_url',
-					'language_settings.meta_description',
-					'storefronts.sections.horizontal_behaviour',
-					'storefronts.sections.section_content.*'
+					{
+						storefronts: [
+							{
+								sections: [
+									{
+										sections_id: [
+											'horizontal_behaviour',
+											'content_spacing',
+											{ section_content: ['display', 'collection', 'item'] }
+										]
+									}
+								]
+							}
+						]
+					}
 				],
 				filter: {
 					status: {
@@ -38,22 +48,25 @@ export default async (
 							_eq: site
 						}
 					},
-					_or: [
-						{
-							language_settings: {
+					language_settings: {
+						_and: [
+							{
+								url_slug: {
+									_eq: path
+								}
+							},
+							{
 								lang_code: {
 									_eq: language
 								}
 							}
-						},
-						{
-							language_settings: {
-								lang_code: {
-									_eq: language
-								}
-							}
+						]
+					},
+					storefronts: {
+						storefronts_code: {
+							_eq: storefront
 						}
-					]
+					}
 				}
 			})
 		)
