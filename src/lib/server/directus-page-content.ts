@@ -1,70 +1,44 @@
-import { CMS_HOST, CMS_TOKEN, PAGES_COLLECTION } from '$env/static/private';
+import { CMS_HOST, CMS_TOKEN, CONTENT_COLLECTION, CONTENT_STATUS } from '$env/static/private';
 import { createDirectus, rest, authentication, readItems } from '@directus/sdk';
 
 const processPageResult = (pageRequestResult: Record<string, any> | null) => {
 	return pageRequestResult;
 };
 
-export default async (
-	site: string,
-	path: string | 'home',
-	storefront: string,
-	language: string
-) => {
+export default async (ids: string[], language: string) => {
 	const client = createDirectus(CMS_HOST).with(authentication()).with(rest());
 
 	client.setToken(CMS_TOKEN);
 
-	const pageRequestResult = await client
+	const ctaObject = [
+		'left_icon',
+		'right_icon',
+		'event_action',
+		'dataLayer_push',
+		'general_attributes',
+		'accesibility_localized_attributes',
+		{ translations: ['text', 'url', 'default'] }
+	];
+
+	const contentRequestResult = await client
 		.request(
-			readItems(PAGES_COLLECTION, {
+			readItems(CONTENT_COLLECTION, {
 				fields: [
 					'name',
-					'dataLayer_load_data',
-					{ language_settings: ['title_tag', 'meta_description'] },
-					'redirect_url',
-					{
-						storefronts: [
-							{
-								sections: [
-									{
-										sections_id: [
-											'horizontal_behaviour',
-											'content_spacing',
-											{ section_content: ['display', 'collection', 'item'] }
-										]
-									}
-								]
-							}
-						]
-					}
+					{ translations: ['title', 'description', 'media', 'embed_media'] },
+					{ primary_cta: ctaObject },
+					{ secondary_cta: ctaObject }
 				],
 				filter: {
+					id: {
+						_in: ids
+					},
 					status: {
-						_eq: 'published'
+						_eq: CONTENT_STATUS
 					},
-					sites: {
-						sites_id: {
-							_eq: site
-						}
-					},
-					language_settings: {
-						_and: [
-							{
-								url_slug: {
-									_eq: path
-								}
-							},
-							{
-								lang_code: {
-									_eq: language
-								}
-							}
-						]
-					},
-					storefronts: {
-						storefronts_code: {
-							_eq: storefront
+					translations: {
+						languages_code: {
+							_eq: language
 						}
 					}
 				}
@@ -72,11 +46,13 @@ export default async (
 		)
 		.catch((error) => {
 			console.error(
-				`Error while retrieving page content with parameters site:${site}, path:${path}, storefront:${storefront} and language:${language}`,
+				`Error while retrieving content with parameters id:${JSON.stringify(
+					ids
+				)}, and language:${language}`,
 				error
 			);
 			return null;
 		});
 
-	return processPageResult(pageRequestResult);
+	return processPageResult(contentRequestResult);
 };
