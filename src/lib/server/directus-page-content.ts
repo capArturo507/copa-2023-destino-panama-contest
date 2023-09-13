@@ -1,7 +1,14 @@
 import { CMS_HOST, CMS_TOKEN, CONTENT_COLLECTION, CONTENT_STATUS } from '$env/static/private';
 import { createDirectus, rest, authentication, readItems } from '@directus/sdk';
 
+const transFormToUsableContent = (current: any, final: Record<string, any>) => {
+	if (current.id === 18) final.hero = current;
+	else final.text.append(current);
+	return final;
+};
+
 const processPageResult = (pageRequestResult: Record<string, any> | null) => {
+	if (!pageRequestResult) return null;
 	return pageRequestResult;
 };
 
@@ -24,6 +31,7 @@ export default async (ids: string[], language: string) => {
 		.request(
 			readItems(CONTENT_COLLECTION, {
 				fields: [
+					'id',
 					'name',
 					{ translations: ['title', 'description', 'media', 'embed_media'] },
 					{ primary_cta: ctaObject },
@@ -53,6 +61,8 @@ export default async (ids: string[], language: string) => {
 			);
 			return null;
 		});
+
+	console.log('result', processPageResult(contentRequestResult));
 
 	return processPageResult(contentRequestResult);
 };

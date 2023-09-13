@@ -12,7 +12,7 @@ export async function load({ cookies }) {
 		maxAge: maxCookieAge ? maxCookieAge : undefined
 	});
 
-	var content = getContent(['18', '9', '10', '11', '12'], 'es');
+	var content = await getContent(['18', '9', '10', '11', '12'], 'es');
 
 	return { content };
 }

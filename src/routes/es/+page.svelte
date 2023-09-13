@@ -3,6 +3,8 @@
 	import HomeHero from '$lib/components/home-hero.svelte';
 
 	export let data: PageData;
+
+	console.log(data);
 </script>
 
 <HomeHero title="temp" body="temp" src="/contest-video.mp4" poster="" />
