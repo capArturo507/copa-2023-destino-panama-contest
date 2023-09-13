@@ -1,5 +1,4 @@
 <script lang="ts">
-	import type { PageData } from './$types';
 	import '../../app.css';
 	import Header from '$lib/components/header.svelte';
 	import Footer from '$lib/components/footer.svelte';
@@ -11,16 +10,9 @@
 			title: 'Política de privacidad'
 		}
 	];
-
-	export let data: PageData;
-
-	let title = 'Hello World' + ' | Inicio';
 </script>
 
-<svelte:head>
-	<title>{title}</title>
-</svelte:head>
-<Header {title} />
+<Header title="Copa Airlines" />
 <main>
 	<slot><!-- optional fallback --></slot>
 </main>

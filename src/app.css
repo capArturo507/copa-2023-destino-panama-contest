@@ -1,3 +1,42 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+@layer base {
+	.icons-list ol,
+	.icons-list ul {
+		@apply my-16;
+	}
+
+	.icons-list li {
+		@apply my-16 flex gap-16 items-center;
+	}
+
+	.icons-list img {
+		@apply square-48;
+	}
+
+	.regular-list ul {
+		@apply pl-24;
+	}
+
+	.regular-list li {
+		@apply list-disc;
+	}
+
+	.regular-list a {
+		@apply text-primary-light hover:underline;
+	}
+
+	.sponsors ul {
+		@apply grid gap-16 grid-cols-2 sm:grid-cols-3 md:grid-cols-4 auto-rows-fr grid-flow-row justify-center;
+	}
+
+	.sponsors li {
+		@apply block place-self-center;
+	}
+
+	.sponsors img {
+		@apply w-full h-auto;
+	}
+}
