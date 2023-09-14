@@ -2,6 +2,9 @@
 	import '../../app.css';
 	import Header from '$lib/components/header.svelte';
 	import Footer from '$lib/components/footer.svelte';
+	import type { LayoutData } from './$types';
+
+	export let data: LayoutData;
 
 	let policies = [
 		{ href: './reglas', title: 'Reglas del Concurso' },
@@ -10,6 +13,8 @@
 			title: 'Política de privacidad'
 		}
 	];
+
+	console.log('Footer', data);
 </script>
 
 <Header title="Copa Airlines" />

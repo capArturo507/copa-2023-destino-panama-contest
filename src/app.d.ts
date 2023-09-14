@@ -11,6 +11,65 @@ declare global {
 		// interface Platform {}
 	}
 
+	namespace Directus {
+		type Logo = {
+			code: string;
+		};
+
+		type Icon = {
+			code: string;
+		};
+
+		type LinkTranslations = {
+			url: string;
+			text: string;
+		};
+
+		type Link = {
+			translations: Array<LinkTranslations>;
+			icon: Icon;
+		};
+
+		type StatementTranslations = {
+			statement: string;
+		};
+
+		type Statement = {
+			translations: Array<StatementTranslations>;
+		};
+
+		type NavigationTranslations = {
+			title: string;
+		};
+
+		type NavigationLinks = {
+			links_id: Link;
+			opens_in: string;
+			relationship: string;
+		};
+
+		type Navigation = {
+			translations: Array<NavigationTranslations>;
+			links: Array<NavigationLinks>;
+		};
+
+		type FooterStorefrontContentItem = Logo | Statement | Navigation;
+
+		type FooterStorefrontContent = {
+			section: string;
+			collection: string;
+			item: FooterStorefrontContentItem;
+		};
+
+		type FooterStorefront = {
+			content: any[];
+		};
+
+		type Footer = {
+			storefront: Array<FooterStorefront>;
+		};
+	}
+
 	type ObjectWithMessage = {
 		message: string;
 	};

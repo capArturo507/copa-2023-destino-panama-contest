@@ -126,5 +126,12 @@ export default async (ids: string[], language: string) => {
 			return null;
 		});
 
+	if (
+		!contentRequestResult ||
+		!Array.isArray(contentRequestResult) ||
+		contentRequestResult.length < 1
+	)
+		return null;
+
 	return processPageResult(contentRequestResult, language);
 };
