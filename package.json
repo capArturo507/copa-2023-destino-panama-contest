@@ -34,6 +34,14 @@
 	"type": "module",
 	"dependencies": {
 		"@directus/sdk": "^11.0.2",
-		"cmds-tailwind-styles": "^1.1.6"
+		"@google-cloud/recaptcha-enterprise": "^4.0.1",
+		"@planetscale/database": "^1.11.0",
+		"@upstash/ratelimit": "^0.4.4",
+		"@upstash/redis": "^1.22.0",
+		"cmds-tailwind-styles": "^1.1.6",
+		"date-fns": "^2.30.0",
+		"date-fns-tz": "^2.0.0",
+		"mysql2": "^3.6.1",
+		"ramda": "^0.29.0"
 	}
 }

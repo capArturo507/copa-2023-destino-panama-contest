@@ -9,6 +9,28 @@ declare global {
 		}
 		// interface PageData {}
 		// interface Platform {}
+
+		type AnswerStatus = 'correct' | 'incorrect';
+
+		type Answer = {
+			questionId: number;
+			answerId: number;
+			status: AnswerStatus;
+		};
+
+		type Participation = {
+			id: string;
+			fullName: string;
+			instagram: string;
+			email: string;
+			phone: string;
+			questions: number[];
+			answers: null | Answer[];
+			startedDateTime: Date;
+			completedDateTime: null | Date;
+			correctAnswers: null | number;
+			completedTimeMS: null | number;
+		};
 	}
 
 	namespace Directus {
