@@ -5,13 +5,48 @@ import {
 	log,
 	logError,
 	nowToUTCString,
+	orElse,
 	stringify
 } from '$lib/utils';
-import { __, curry, fromPairs, pipe } from 'ramda';
-import { DATABASE_DATE_FORMAT, DB_TIMEZONE } from '$env/static/private';
+import {
+	__,
+	always,
+	andThen,
+	assoc,
+	chain,
+	curry,
+	defaultTo,
+	fromPairs,
+	ifElse,
+	invoker,
+	isNil,
+	isNotNil,
+	map,
+	modify,
+	objOf,
+	pipe,
+	prop,
+	tap,
+	tryCatch
+} from 'ramda';
+import {
+	APP_MAX_QUESTIONS,
+	APP_TOTAL_QUESTIONS,
+	COOKIE_PARTICIPATION,
+	DATABASE_DATE_FORMAT,
+	DB_TIMEZONE,
+	REGISTER_CACHE_IN_SECONDS
+} from '$env/static/private';
 import type { RequestEvent } from '@sveltejs/kit';
-import { insertParticipation } from '../database/database';
+import { getParticipationDetails, insertParticipation } from '../database/database';
 import Result from 'folktale/result';
+import {
+	paramsToParticipation,
+	processParticipationInsert,
+	processParticipationQuery
+} from '../transformations';
+
+import { getFromCache, setRedis } from '../cache';
 
 const toArray = (formData: FormData) => Array.from(formData);
 
@@ -28,37 +63,58 @@ const append = curry((formData: FormData, key: DataBase.QueryParticipationKeys, 
 	return formData;
 });
 
+const defaultTo0 = defaultTo(0);
+
+const parseIntOrDefault = defaultTo0(parseInt);
+
 /** @type {import('./$types').Actions} */
-export const register = async ({
-	cookies,
-	getClientAddress,
-	locals,
-	request,
-	setHeaders
-}: RequestEvent) => {
-	// validate server cache
-
-	/* if no server cache for request then request actually */
-
+export const register = async ({ cookies, request, setHeaders }: RequestEvent) => {
 	const formData = await request.formData();
 
-	append(formData, 'questions', generateRandomIndices(60, 10));
+	append(
+		formData,
+		'questions',
+		generateRandomIndices(
+			parseIntOrDefault(APP_TOTAL_QUESTIONS),
+			parseIntOrDefault(APP_MAX_QUESTIONS)
+		)
+	);
 
 	append(formData, 'started_datetime', getNowFormated());
 
 	const params = formDataToObject(formData);
 
-	const attemptToParticipate: typeof Result.Ok | typeof Result.Error = await insertParticipation(
-		params
+	const initialParticipation = paramsToParticipation(params);
+
+	const participate = () => insertParticipation(params);
+
+	const getParticipation = () => getParticipationDetails(params);
+
+	const initParticipationInsertProcess = processParticipationInsert(initialParticipation);
+
+	const orElseGetParticipation = orElse(getParticipation);
+
+	const participateOrReturnQuestions = pipe(
+		participate,
+		andThen(initParticipationInsertProcess),
+		andThen(orElseGetParticipation),
+		andThen(processParticipationQuery)
 	);
 
-	log(
-		Result.Ok(1)
-			.orElse((x: any) => 'yeyo')
-			.map((x: any) => 'lucky')
+	/* set client, server cache, and cookies */
+
+	const ifNoCacheRegister = orElse(participateOrReturnQuestions);
+
+	const ifResultSaveCache = chain();
+
+	const initRegistration = pipe(
+		getFromCache,
+		andThen(tap(log)),
+		andThen(ifNoCacheRegister),
+		andThen(tap(log))
 	);
 
-	/* set client and server cache */
+	const participation = initRegistration(COOKIE_PARTICIPATION, cookies);
 
 	return {
 		success: true

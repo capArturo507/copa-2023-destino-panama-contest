@@ -49,22 +49,29 @@ declare global {
 			correctAnswers: null | number;
 			completedTimeMS: null | number;
 		};
+
+		type CacheValue = {
+			value: string;
+			seconds: number;
+		};
 	}
 
 	namespace DataBase {
-		type QueryParticipationKeys =
-			| 'id'
-			| 'full_name'
-			| 'instagram'
-			| 'email'
-			| 'phone'
-			| 'questions'
-			| 'answers'
-			| 'accepted_terms'
-			| 'started_datetime'
-			| 'completed_datetime'
-			| 'correct_answers'
-			| 'completed_time_ms';
+		type Participation = {
+			id: string;
+			full_name: string;
+			instagram: string;
+			email: string;
+			phone: string;
+			questions: string;
+			answers: string | null;
+			started_datetime: string;
+			completed_datetime: string | null;
+			correct_answers: number | null;
+			completed_time_ms: number | null;
+		};
+
+		type QueryParticipationKeys = keyof Participation | 'accepted_terms';
 
 		type QueryParticipationParams = Record<QueryParticipationKeys, string>;
 
@@ -91,6 +98,11 @@ declare global {
 			statement: string;
 			time: number;
 		};
+
+		type ParticipationQueryRow = Pick<
+			Participation,
+			'id' | 'questions' | 'correct_answers' | 'completed_time_ms'
+		>;
 	}
 
 	namespace Directus {

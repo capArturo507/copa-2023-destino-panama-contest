@@ -1,6 +1,8 @@
+import { createResultError, createResutlOk } from '$lib/utils';
 import type { Connection } from '@planetscale/database';
-import { andThen, assoc, has, ifElse, otherwise, path, pipe } from 'ramda';
-import { createResultError, createResutlOk, execute } from './utils';
+import { andThen, assoc, has, ifElse, invoker, otherwise, path, pipe } from 'ramda';
+
+const execute = invoker(2, 'execute');
 
 const getMessageProp = path(['body', 'message']);
 
