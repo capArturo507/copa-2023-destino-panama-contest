@@ -5,8 +5,6 @@ const floor = bind(Math.floor, Math);
 
 const random = bind(Math.random, Math);
 
-const generateRandomIndex = pipe(identity, multiply(random()), floor);
-
 const addToSet: (value: number) => (set: Set<number>) => Set<number> = invoker(1, 'add');
 
 const arrayFromSet = (set: Set<number>): number[] => Array.from(set);
@@ -15,18 +13,20 @@ const setHasItem: (value: number) => (set: Set<number>) => boolean = invoker(1, 
 
 const getSetSize: (set: Set<number>) => number = prop('size');
 
-const generatUniqueIndexs = curry((set: Set<number>, desiredLength: number) => {
+const generatUniqueIndexs = curry((maxLength: number, desiredLength: number, set: Set<number>) => {
 	const equalsDesiredLength = equals(desiredLength);
 
 	const isSetSizeEqualsToDesiredLength = pipe(getSetSize, equalsDesiredLength);
 
 	if (isSetSizeEqualsToDesiredLength(set)) return arrayFromSet(set);
 
-	const newIndex = generateRandomIndex(desiredLength);
+	const generateRandomIndex = pipe(identity, multiply(random()), floor);
+
+	const newIndex = generateRandomIndex(maxLength);
 
 	const doesSetHasNewIndex = setHasItem(newIndex);
 
-	const getNewFunction: (set: Set<number>) => any = generatUniqueIndexs(__, desiredLength);
+	const getNewFunction: (set: Set<number>) => any = generatUniqueIndexs(maxLength, desiredLength);
 
 	if (doesSetHasNewIndex(set)) return getNewFunction(set);
 
@@ -47,7 +47,7 @@ export const generateRandomIndices = curry((originalArrayLength: number, desired
 			`Desired total length (${desiredLength}) cannot be greater than the original array length (${originalArrayLength})`
 		);
 
-	const initRandomIndex = generatUniqueIndexs(new Set());
+	const initRandomIndex = generatUniqueIndexs(originalArrayLength, desiredLength);
 
-	return initRandomIndex(desiredLength);
+	return initRandomIndex(new Set());
 });

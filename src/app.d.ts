@@ -6,11 +6,29 @@ declare global {
 		interface Locals {
 			browserLanguage: string[];
 			supportedLanguages: string[];
+			contestEndDate: Date;
 		}
 		// interface PageData {}
 		// interface Platform {}
 
+		type InputErrors = 'FORMAT' | 'LENGHT' | 'INVALID';
+
+		type InputNames = 'NAME' | 'INSTAGRAM' | 'PHONE' | 'EMAIL' | 'TERMS';
+
+		type InsertError =
+			| `${InputErrors}_${InputNames}`
+			| 'INVALID_INSERT'
+			| 'INVALID_SELECT'
+			| 'UNKNOWN';
+
 		type AnswerStatus = 'correct' | 'incorrect';
+
+		type ParticipationResult = {
+			id: string;
+			questions: string;
+			correct_answer: number | null;
+			completed_time_ms: number | null;
+		};
 
 		type Answer = {
 			questionId: number;
@@ -30,6 +48,48 @@ declare global {
 			completedDateTime: null | Date;
 			correctAnswers: null | number;
 			completedTimeMS: null | number;
+		};
+	}
+
+	namespace DataBase {
+		type QueryParticipationKeys =
+			| 'id'
+			| 'full_name'
+			| 'instagram'
+			| 'email'
+			| 'phone'
+			| 'questions'
+			| 'answers'
+			| 'accepted_terms'
+			| 'started_datetime'
+			| 'completed_datetime'
+			| 'correct_answers'
+			| 'completed_time_ms';
+
+		type QueryParticipationParams = Record<QueryParticipationKeys, string>;
+
+		type FieldKeys =
+			| 'name'
+			| 'type'
+			| 'table'
+			| 'orgTable'
+			| 'database'
+			| 'orgName'
+			| 'columnLength'
+			| 'charset'
+			| 'flags';
+
+		type Field = Record<FieldKeys, string>;
+
+		type Result<T> = {
+			headers: string[];
+			fields: Field[];
+			rows: T[];
+			rowsAffected: number;
+			insertId: string;
+			size: number;
+			statement: string;
+			time: number;
 		};
 	}
 

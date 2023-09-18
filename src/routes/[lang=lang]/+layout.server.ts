@@ -6,8 +6,6 @@ export const load: LayoutServerLoad = async ({ params }) => {
 	const language = params.lang;
 	const content = await getFooterContent(language);
 
-	console.log('layout content', content);
-
 	if (!content || Array.isArray(content) || typeof content !== 'object')
 		throw error(404, 'Content not found');
 

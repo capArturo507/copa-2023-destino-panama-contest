@@ -73,8 +73,6 @@ export const getFooterContent = async (language: string) => {
 			return null;
 		});
 
-	console.log('view before test', contentRequestResult);
-
 	if (!isDirectusFooter(contentRequestResult)) return null;
 
 	return processFooter(contentRequestResult);

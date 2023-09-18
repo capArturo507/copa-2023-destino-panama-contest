@@ -41,6 +41,7 @@
 		"cmds-tailwind-styles": "^1.1.6",
 		"date-fns": "^2.30.0",
 		"date-fns-tz": "^2.0.0",
+		"folktale": "^2.3.2",
 		"mysql2": "^3.6.1",
 		"ramda": "^0.29.0"
 	}

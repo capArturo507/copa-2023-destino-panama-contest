@@ -13,8 +13,6 @@
 			title: 'Política de privacidad'
 		}
 	];
-
-	console.log('Footer', data);
 </script>
 
 <Header title="Copa Airlines" />

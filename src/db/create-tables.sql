@@ -8,6 +8,6 @@ CREATE TABLE participants (
   answers               VARCHAR(255),
   started_datetime      DATETIME NOT NULL, 
   completed_datetime    DATETIME,
-  correct_answers       TINYINT DEFAULT 0,
-  completed_time_ms     INT DEFAULT 1296000000
+  correct_answers       TINYINT
+  completed_time_ms     INT
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
