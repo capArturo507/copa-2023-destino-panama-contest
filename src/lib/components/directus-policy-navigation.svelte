@@ -21,7 +21,7 @@
 			{@const { links_id } = link}
 			{@const text = languageFilter(link.links_id.translations)}
 			<li>
-				<a href={text.url} class="text-primary-light hover:underliene">
+				<a href={text.url} class="text-primary-light hover:underliene transition-all">
 					<span>{text.text}</span>
 				</a>
 			</li>

@@ -21,7 +21,7 @@
 			{@const { links_id } = link}
 			{@const text = languageFilter(link.links_id.translations)}
 			<li class="square-12/3">
-				<a href={text.url} class="button button-outline-grey" title={text.text}>
+				<a href={text.url} class="button button-outline-grey transition-colors" title={text.text}>
 					{#if links_id.icon}
 						<span class="block square-16 fill-current">{@html links_id.icon.code}</span>
 					{/if}
