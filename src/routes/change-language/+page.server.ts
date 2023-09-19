@@ -5,6 +5,8 @@ export const actions = {
 	default: async (event) => {
 		const { cookies } = event;
 
+		console.log('are you triggering?');
+
 		cookies.set('openLanguageNav', 'open');
 
 		return {
