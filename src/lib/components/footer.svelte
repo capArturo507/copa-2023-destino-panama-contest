@@ -8,6 +8,8 @@
 	export let language: string;
 
 	const { content } = footer.storefront[0];
+
+	console.log('en el footer');
 </script>
 
 <footer class="py-32 bg-grey-100">

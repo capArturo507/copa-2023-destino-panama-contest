@@ -7,6 +7,8 @@
 	export let data: LayoutData;
 
 	const { header, footer, language, openLanguageNav } = data;
+
+	console.log(header, footer, language, openLanguageNav);
 </script>
 
 <Header {header} {language} {openLanguageNav} />
