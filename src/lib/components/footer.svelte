@@ -17,7 +17,7 @@
 		{#each content as type}
 			{@const { section, collection, item } = type}
 			{#if collection === 'logos'}
-				<DirectusLogo {item} class={section} />
+				<DirectusLogo {item} class="block max-w-[200px] {section}" />
 			{:else if collection === 'statement'}
 				<DirectusStatement
 					{item}
