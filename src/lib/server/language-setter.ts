@@ -36,7 +36,7 @@ const setLanguageCookie = (value: string, cookies: Cookies) =>
 export const setLanguage = (event: RequestEvent, site: any) => {
 	const { params, request, locals, cookies } = event;
 
-	const paramLanguage = params.lang;
+	const paramLanguage = params?.lang;
 
 	const browserLanguage = request.headers.get('Accept-Language');
 
