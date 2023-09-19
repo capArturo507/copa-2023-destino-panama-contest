@@ -1,4 +1,4 @@
-import { CONTEST_END_DATE, DB_TIMEZONE } from '$env/static/private';
+import { CONTEST_END_DATE, TIMEZONE } from '$env/static/private';
 import { now } from '$lib/utils';
 import { differenceInSeconds } from 'date-fns';
 import { toDate } from 'date-fns-tz';
@@ -9,7 +9,7 @@ export const setCookie = invoker(3, 'set');
 
 const toDateZoned = curry(toDate);
 
-const toPTYTimeZone = toDateZoned(__, { timeZone: DB_TIMEZONE });
+const toPTYTimeZone = toDateZoned(__, { timeZone: TIMEZONE });
 
 const contestEndDateInPTY = toPTYTimeZone(CONTEST_END_DATE);
 

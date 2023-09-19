@@ -23,6 +23,10 @@
 
 	const filterCurrentLanguageLink = pipe(filter(isCurrentLanguageLink), head);
 
+	const onLostFocust = () => {
+		openLanguageNav = 'close';
+	};
+
 	const enhancedForm = ({ cancel }: any) => {
 		cancel();
 
@@ -32,7 +36,7 @@
 	};
 </script>
 
-<header class="absolute top-0 left-0 w-full h-64 border-b border-grey-0/20">
+<header class="absolute top-0 left-0 w-full h-64 border-b border-grey-0/20 z-30">
 	<div
 		class="container mx-auto py-8 grid justify-stretch auto-cols-auto grid-flow-col items-center"
 	>
@@ -48,6 +52,7 @@
 					<button
 						class="grid gap-4 auto-cols-min grid-flow-col items-center button button-outline-invert"
 						type="submit"
+						on:blur={onLostFocust}
 					>
 						<span>
 							{@html currentLangLink.links_id.icon.code}
@@ -58,7 +63,7 @@
 				{#if openLanguageNav === 'open'}
 					<nav
 						aria-label={navTranslation.title}
-						class="absolute top-full my-12 bg-backgound-lightblue px-8 py-4 left-1/2 -translate-x-1/2 rounded shadow-medium"
+						class="absolute top-full my-12 bg-backgound-lightblue px-8 py-4 left-1/2 -translate-x-1/2 rounded shadow-medium z-50"
 						transition:fly={{ y: -8 }}
 					>
 						<ul>

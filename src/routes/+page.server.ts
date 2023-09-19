@@ -1,9 +1,6 @@
+import { redirect } from '@sveltejs/kit';
+
 /** @type {import('./$types').PageLoad} */
-export function load({ params, setHeaders }) {
-	return {
-		post: {
-			title: `Title for ${params.slug} goes here`,
-			content: `Content for ${params.slug} goes here`
-		}
-	};
+export function load({ locals }) {
+	if (locals.language) throw redirect(303, '/' + locals.language);
 }

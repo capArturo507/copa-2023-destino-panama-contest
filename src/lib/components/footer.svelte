@@ -8,16 +8,14 @@
 	export let language: string;
 
 	const { content } = footer.storefront[0];
-
-	console.log(content);
 </script>
 
 <footer class="py-32 bg-grey-100">
-	<div class="container mx-auto grid grid-cols-2 auto-rows-max justify-start gap-16 area">
+	<div class="container mx-auto grid grid-cols-[auto_1fr] auto-rows-max justify-start gap-16 area">
 		{#each content as type}
 			{@const { section, collection, item } = type}
 			{#if collection === 'logos'}
-				<DirectusLogo {item} class="block max-w-[200px] {section}" />
+				<DirectusLogo {item} class="block max-w-[200px] pb-24 {section}" />
 			{:else if collection === 'statement'}
 				<DirectusStatement
 					{item}

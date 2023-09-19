@@ -1,8 +1,11 @@
+import { COOKIE_LANGUAGE } from '$env/static/private';
 import { redirect } from '@sveltejs/kit';
 
 /** @type {import('@sveltejs/kit').Handle} */
 export async function handle({ event, resolve }) {
-	const { url, cookies } = event;
+	const { url, cookies, locals } = event;
+
+	locals.language = cookies.get(COOKIE_LANGUAGE);
 
 	if (url.pathname === '/change-language') {
 		const openStatus = cookies.get('openLanguageNav');

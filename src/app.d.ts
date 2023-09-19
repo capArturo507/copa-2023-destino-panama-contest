@@ -4,9 +4,7 @@ declare global {
 	namespace App {
 		// interface Error {}
 		interface Locals {
-			openLanguageNav: 'open' | 'close';
-			browserLanguage: string[];
-			supportedLanguages: string[];
+			language: string;
 			contestEndDate: Date;
 			cache: CacheValue;
 		}

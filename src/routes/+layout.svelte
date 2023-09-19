@@ -10,7 +10,7 @@
 </script>
 
 <Header {header} {language} {openLanguageNav} />
-<main class="min-h-screen bg-paper">
+<main class="min-h-screen bg-bg-paper">
 	<slot><!-- optional fallback --></slot>
 </main>
 <Footer {footer} {language} />

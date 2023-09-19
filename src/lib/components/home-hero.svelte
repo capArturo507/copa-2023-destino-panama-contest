@@ -4,24 +4,30 @@
 	import PauseIcon from './pause-icon.svelte';
 	import { fade, slide } from 'svelte/transition';
 	import { onMount } from 'svelte';
+	import { filterCurrentLanguage } from '$lib/directus-utilts';
 
-	export let title: string;
-	export let body: string;
-	export let src: string;
-	export let poster: string;
+	export let content: any;
+	export let video: string;
+	export let language: string;
 
-	let video: HTMLVideoElement;
+	const { translations } = content;
+
+	const currentTransaltion = filterCurrentLanguage(language)(translations);
+
+	const { title, description } = currentTransaltion;
+
+	let videoTag: HTMLVideoElement;
 	let isVideoPlaying: boolean = false;
 
 	let device = 'xs';
 
 	const playVideo = () => {
 		isVideoPlaying = true;
-		video.play();
+		videoTag.play();
 	};
 
 	const pauseVideo = () => {
-		video.pause();
+		videoTag.pause();
 	};
 
 	const stopVideo = () => {
@@ -52,11 +58,10 @@
 			class="col-start-1 row-start-1 row-span-3 sm:rounded-2xl sm:overflow-hidden sm:row-start-2 sm:row-span-1 sm:col-start-2 sm:my-32 md:col-start-1"
 		>
 			<video
-				{src}
+				src={video}
 				{title}
-				{poster}
 				class="w-screen h-auto sm:w-full"
-				bind:this={video}
+				bind:this={videoTag}
 				on:pause={stopVideo}
 				on:ended={stopVideo}
 				on:error={stopVideo}
@@ -100,7 +105,9 @@
 				>
 					{title}
 				</h1>
-				<p class="font-body text-grey-100 pt-8 pb-16 caret-transparent max-w-prose">{@html body}</p>
+				<p class="font-body text-grey-100 pt-8 pb-16 caret-transparent max-w-prose">
+					{@html description}
+				</p>
 				<div class="block w-24 mx-auto animate-bounce sm:mx-0 sm:hidden">
 					<ChevronDown />
 				</div>
