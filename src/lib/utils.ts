@@ -1,6 +1,6 @@
 import { format } from 'date-fns';
 import { utcToZonedTime } from 'date-fns-tz';
-import { __, always, bind, curry, invoker, pipe, tryCatch } from 'ramda';
+import { __, always, bind, curry, filter, invoker, pipe, tryCatch } from 'ramda';
 import Result from 'folktale/result';
 
 export const now = () => new Date();
@@ -13,7 +13,7 @@ export const fromUTCToZonedTime = curry(utcToZonedTime);
 
 export const formatDate = curry(format);
 
-export const log = bind(console.log, console);
+export const logMessage = (message: string) => (value: any) => console.log(message, value);
 
 export const logError = bind(console.error, console);
 
@@ -36,3 +36,5 @@ export const createResultError: <T>(value: T) => typeof Result.Error = bind(Resu
 export const createResutlOk: <T>(value: T) => typeof Result.Ok = bind(Result.Ok, Result);
 
 export const orElse = invoker(1, 'orElse');
+
+///

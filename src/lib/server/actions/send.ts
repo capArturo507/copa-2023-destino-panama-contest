@@ -1,5 +1,5 @@
 import { DB_TIMEZONE } from '$env/static/private';
-import { fromUTCToZonedTime, log, nowToUTCString } from '$lib/utils';
+import { fromUTCToZonedTime, logMessage, nowToUTCString } from '$lib/utils';
 import type { RequestEvent } from '@sveltejs/kit';
 import { differenceInSeconds } from 'date-fns';
 import { __, curry, pipe } from 'ramda';
@@ -17,7 +17,7 @@ const calculatMaxAgeInSeconds = (contestEndDatePanama: Date) => {
 
 /** @type {import('./$types').Actions} */
 export const send = async (event: RequestEvent) => {
-	log(event);
+	logMessage(event);
 
 	return {
 		success: true

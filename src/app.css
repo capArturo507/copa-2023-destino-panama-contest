@@ -39,4 +39,32 @@
 	.sponsors img {
 		@apply w-full h-auto;
 	}
+
+	.area {
+		grid-template-areas:
+			'social social'
+			'staralliance panama'
+			'copyright copyright'
+			'policies policies';
+	}
+
+	.social {
+		grid-area: social;
+	}
+
+	.policies {
+		grid-area: policies;
+	}
+
+	.staralliance {
+		grid-area: staralliance;
+	}
+
+	.copyright {
+		grid-area: copyright;
+	}
+
+	.panama {
+		grid-area: panama;
+	}
 }

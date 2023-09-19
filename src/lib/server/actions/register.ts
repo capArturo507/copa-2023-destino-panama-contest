@@ -2,7 +2,7 @@ import { generateRandomIndices } from '$lib/random-items';
 import {
 	formatDate,
 	fromUTCToZonedTime,
-	log,
+	logMessage,
 	logError,
 	nowToUTCString,
 	orElse,
@@ -18,16 +18,12 @@ import {
 	defaultTo,
 	fromPairs,
 	ifElse,
-	invoker,
-	isNil,
 	isNotNil,
 	map,
-	modify,
 	objOf,
 	pipe,
 	prop,
-	tap,
-	tryCatch
+	tap
 } from 'ramda';
 import {
 	APP_MAX_QUESTIONS,
@@ -39,14 +35,14 @@ import {
 } from '$env/static/private';
 import type { RequestEvent } from '@sveltejs/kit';
 import { getParticipationDetails, insertParticipation } from '../database/database';
-import Result from 'folktale/result';
 import {
 	paramsToParticipation,
 	processParticipationInsert,
 	processParticipationQuery
 } from '../transformations';
 
-import { getFromCache, setRedis } from '../cache';
+import { getFromCache, saveToCache } from '../cache';
+import { getTimeToEndInSeconds } from '../utils';
 
 const toArray = (formData: FormData) => Array.from(formData);
 
@@ -67,8 +63,10 @@ const defaultTo0 = defaultTo(0);
 
 const parseIntOrDefault = defaultTo0(parseInt);
 
+const getCompletedTime = prop('completed_time_ms');
+
 /** @type {import('./$types').Actions} */
-export const register = async ({ cookies, request, setHeaders }: RequestEvent) => {
+export const register = async ({ cookies, request, locals }: RequestEvent) => {
 	const formData = await request.formData();
 
 	append(
@@ -101,20 +99,57 @@ export const register = async ({ cookies, request, setHeaders }: RequestEvent) =
 		andThen(processParticipationQuery)
 	);
 
-	/* set client, server cache, and cookies */
-
 	const ifNoCacheRegister = orElse(participateOrReturnQuestions);
 
-	const ifResultSaveCache = chain();
+	const saveToCaches = saveToCache(cookies, false);
 
-	const initRegistration = pipe(
-		getFromCache,
-		andThen(tap(log)),
-		andThen(ifNoCacheRegister),
-		andThen(tap(log))
+	const ifResultSaveCache = chain(saveToCaches);
+
+	const setCacheObject = curry(
+		(
+			key: string,
+			minimumTime: number,
+			maximumTime: number,
+			participation: DataBase.ParticipationQueryRow
+		): App.CacheValue => {
+			const hasCompletedParticipation = pipe(getCompletedTime, isNotNil);
+			const getSeconds = ifElse(
+				hasCompletedParticipation,
+				always(maximumTime),
+				always(minimumTime)
+			);
+			const seconds = getSeconds(participation);
+			const setCacheObject = pipe(
+				stringify,
+				objOf('value'),
+				assoc('key', key),
+				assoc('seconds', seconds)
+			);
+			return setCacheObject(participation);
+		}
 	);
 
-	const participation = initRegistration(COOKIE_PARTICIPATION, cookies);
+	const initCacheObject = setCacheObject(
+		COOKIE_PARTICIPATION,
+		parseInt(REGISTER_CACHE_IN_SECONDS),
+		getTimeToEndInSeconds()
+	);
+
+	const mapToCacheObject = map(initCacheObject);
+
+	const setCacheToLocals = (value: App.CacheValue) => (locals.cache = value);
+
+	const saveCache = pipe(mapToCacheObject, tap(map(setCacheToLocals)), ifResultSaveCache);
+
+	const initRegistration = pipe(
+		getFromCache(false),
+		andThen(ifNoCacheRegister),
+		andThen(tap(saveCache))
+	);
+
+	const participation = await initRegistration(COOKIE_PARTICIPATION, cookies);
+
+	logMessage('showing final object')(participation);
 
 	return {
 		success: true

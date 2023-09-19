@@ -4,9 +4,11 @@ declare global {
 	namespace App {
 		// interface Error {}
 		interface Locals {
+			openLanguageNav: 'open' | 'close';
 			browserLanguage: string[];
 			supportedLanguages: string[];
 			contestEndDate: Date;
+			cache: CacheValue;
 		}
 		// interface PageData {}
 		// interface Platform {}
@@ -51,6 +53,7 @@ declare global {
 		};
 
 		type CacheValue = {
+			key: string;
 			value: string;
 			seconds: number;
 		};

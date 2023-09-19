@@ -1,5 +1,13 @@
 <script lang="ts">
-	export let logo: Directus.Logo;
+	export let item;
+
+	let className: string = '';
+
+	export { className as class };
+
+	const { code } = item;
 </script>
 
-{@html logo.code}
+<div class={className}>
+	{@html code}
+</div>

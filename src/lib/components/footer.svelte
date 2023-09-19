@@ -1,56 +1,35 @@
 <script lang="ts">
-	import StarAlliance from './star-alliance.svelte';
-	import InstagramIcon from './instagram-icon.svelte';
-	import FacebookIcon from './facebook-icon.svelte';
-	import TiktokIcon from './tiktok-icon.svelte';
-	import TwitterIcon from './twitter-icon.svelte';
+	import DirectuSocialNavigation from './directu-social-navigation.svelte';
+	import DirectusLogo from './directus-logo.svelte';
+	import DirectusPolicyNavigation from './directus-policy-navigation.svelte';
+	import DirectusStatement from './directus-statement.svelte';
 
-	export let socialNavLabel: string;
-	export let policiesNavLabel: string;
-	export let copyright: string;
-	export let policies: any[];
+	export let footer: any;
+	export let language: string;
 
-	const year = new Date().getFullYear();
+	const { content } = footer.storefront[0];
 
-	export const socialNetwork = [
-		{ href: 'https://www.instagram.com/copaairlines/', title: 'Instagram', icon: InstagramIcon },
-		{ href: 'https://www.facebook.com/copaairlines/', title: 'Facebook', icon: FacebookIcon },
-		{ href: 'https://www.tiktok.com/@copaairlines', title: 'Tiktok', icon: TiktokIcon },
-		{ href: 'https://twitter.com/CopaAirlines', title: 'Twitter', icon: TwitterIcon }
-	];
+	console.log(content);
 </script>
 
 <footer class="py-32 bg-grey-100">
-	<div class="container mx-auto grid grid-cols-1 auto-rows-auto gap-16 justify-items-start">
-		<nav aria-labelledby={socialNavLabel} class="py-16">
-			<ul class="grid grid-cols-4 auto-cols-auto gap-8">
-				{#each socialNetwork as social}
-					<li>
-						<a
-							href={social.href}
-							title={social.title}
-							target="_blank"
-							rel="noopener noreferrer"
-							class="block w-48 h-32 fill-current py-8 px-16 rounded-3xl border border-grey-600 hover:bg-grey-600 text-grey-600 hover:text-grey-0 transition-colors"
-						>
-							<svelte:component this={social.icon} />
-						</a>
-					</li>
-				{/each}
-			</ul>
-		</nav>
-		<StarAlliance />
-		<p class="text-12/16 text-grey-600">{copyright}</p>
-		<nav aria-labelledby={policiesNavLabel}>
-			<ul class="grid grid-cols-2 gap-16 text-12/16">
-				{#each policies as policiy}
-					<li>
-						<a href={policiy.href} class="underline text-primary-light">
-							{policiy.title}
-						</a>
-					</li>
-				{/each}
-			</ul>
-		</nav>
+	<div class="container mx-auto grid grid-cols-2 auto-rows-max justify-start gap-16 area">
+		{#each content as type}
+			{@const { section, collection, item } = type}
+			{#if collection === 'logos'}
+				<DirectusLogo {item} class={section} />
+			{:else if collection === 'statement'}
+				<DirectusStatement
+					{item}
+					{language}
+					class="text-grey-600 text-12/16 max-w-prose copyright"
+				/>
+			{:else if collection === 'navigation' && section === 'follow'}
+				<DirectuSocialNavigation {item} {language} class="social" />
+			{:else}
+				<DirectusPolicyNavigation {item} {language} class="policies" />
+			{/if}
+		{/each}
+		<span class="social policies staralliance copyright panama" />
 	</div>
 </footer>

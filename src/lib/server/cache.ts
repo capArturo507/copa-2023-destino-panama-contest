@@ -1,29 +1,24 @@
-import {
-	COOKIE_PARTICIPATION,
-	REDIS_TOKEN,
-	REDIS_URL,
-	REGISTER_CACHE_IN_SECONDS
-} from '$env/static/private';
-import { createResultError, createResutlOk, log, orElse, parseJSON, stringify } from '$lib/utils';
-import type { Cookies } from '@sveltejs/kit';
+import { REDIS_TOKEN, REDIS_URL } from '$env/static/private';
+import { createResultError, createResutlOk, logMessage, orElse, parseJSON } from '$lib/utils';
+import type { Cookies, RequestEvent } from '@sveltejs/kit';
 import { Redis } from '@upstash/redis';
 import {
+	F,
 	__,
 	always,
 	andThen,
+	assoc,
 	chain,
+	curry,
+	identity,
 	ifElse,
+	invoker,
 	isNil,
-	isNotNil,
-	modify,
 	otherwise,
 	pipe,
-	prop,
 	tap,
 	tryCatch
 } from 'ramda';
-import { invoker } from 'ramda';
-import { getTimeToEndInSeconds } from './utils';
 
 const redis = new Redis({
 	url: REDIS_URL,
@@ -56,49 +51,36 @@ const tryToParseAndValidateNil = pipe(chain(tryToParse), chain(ifNilReturnError)
 
 const getRedisCache = pipe(getRedis, otherwise(createResultError), andThen(createResutlOk));
 
-export const getFromCache = pipe(
-	getCookie,
-	orElse(getRedisCache),
-	andThen(tryToParseAndValidateNil)
-);
+const onlyCookieToPromise = (value: any) => new Promise((resolve) => resolve(value));
+
+export const getFromCache = (redis: boolean) =>
+	redis
+		? pipe(getCookie, orElse(getRedisCache), andThen(tryToParseAndValidateNil))
+		: pipe(getCookie, tryToParseAndValidateNil, onlyCookieToPromise);
 
 /* SAVE TO CACHE */
 
 const setRedis = invoker(3, 'set')(__, __, __, redis);
 
-const timeToEndInSeconds = getTimeToEndInSeconds();
+const setCacheInRedis = ({ key, value, seconds }: App.CacheValue) =>
+	setRedis(key, value, { ex: seconds });
 
-const minCacheAge = parseInt(REGISTER_CACHE_IN_SECONDS);
+const basicCookieOptions = { sameSite: true, secure: true };
 
-const getCompletedTimeInMS = prop('completed_time_ms');
-
-const isCompleted = pipe(getCompletedTimeInMS, isNotNil);
-
-const defineCacheTime = ifElse(isCompleted, getTimeToEndInSeconds, always(minCacheAge));
-
-const setParticationCookie = ({ value, seconds }: App.CacheValue) =>
-	cookies.set(COOKIE_PARTICIPATION, value, {
-		maxAge: seconds,
-		sameSite: true,
-		secure: true
-	});
-
-const setCache = ({ seconds }: App.CacheValue) =>
-	setHeaders({ 'cache-control': `max-age=${seconds}` });
-
-const setRedisCache = ({ value, seconds }: App.CacheValue) =>
-	setRedis(COOKIE_PARTICIPATION, value, { ex: seconds });
-
-const stringifyValue = modify('value', stringify);
-
-const calculateCacheTime = modify('seconds', defineCacheTime);
-
-const saveCaches = pipe(
-	objOf('value'),
-	assoc('seconds', 0),
-	stringifyValue,
-	calculateCacheTime,
-	tap(log) /* , tap(setParticationCookie), tap(setCache), tap(setRedisCache) */
+const setCacheInCookie = curry((cookies: Cookies, { key, value, seconds }: App.CacheValue) =>
+	cookies.set(key, value, assoc('maxAge', seconds, basicCookieOptions))
 );
 
-export const saveToCache = pipe();
+export const saveToCache = curry(
+	(cookies: Cookies | null, redis: boolean, cacheSetting: App.CacheValue) => {
+		const cookieSetter = cookies ? setCacheInCookie(cookies) : F;
+
+		const redisSetter = redis
+			? pipe(setCacheInRedis, otherwise(createResultError), andThen(createResutlOk))
+			: identity;
+
+		const saveAllCaches = pipe(tap(cookieSetter), redisSetter);
+
+		return saveAllCaches(cacheSetting);
+	}
+);

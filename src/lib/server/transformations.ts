@@ -1,9 +1,10 @@
 import { ERROR_INVALID_REGISTER_CODE, INTERNAL_ERROR } from '$env/static/private';
-import { createResultError, createResutlOk, log, orElse } from '$lib/utils';
+import { createResultError, createResutlOk, logMessage, orElse, stringify } from '$lib/utils';
 import {
 	__,
 	always,
 	assoc,
+	curry,
 	equals,
 	head,
 	ifElse,
