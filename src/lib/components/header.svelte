@@ -55,9 +55,9 @@
 						on:blur={onLostFocust}
 					>
 						<span>
-							{@html currentLangLink.links_id.icon.code}
+							{@html currentLangLink?.links_id?.icon?.code}
 						</span>
-						<span>{filterLanguage(currentLangLink.links_id.translations).text}</span>
+						<span>{filterLanguage(currentLangLink?.links_id?.translations)?.text}</span>
 					</button>
 				</form>
 				{#if openLanguageNav === 'open'}
