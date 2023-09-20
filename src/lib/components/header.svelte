@@ -8,6 +8,8 @@
 
 	let showLang = false;
 
+	export let language: string;
+
 	const openLang = () => {
 		showLang = !showLang;
 	};
@@ -26,7 +28,7 @@
 		</div>
 		<div class="relative grid justify-end">
 			<button
-				class=" button button-circle button-outline-invert square-48 fill-current grid items-center"
+				class=" button button-outline-invert fill-current grid place-content-center"
 				on:click={openLang}
 				on:blur={hideLang}><LanguageSolid /></button
 			>
@@ -37,26 +39,42 @@
 					transition:fly={{ y: -8 }}
 				>
 					<ul class="grid auto-rows-min grid-flow-row gap-8">
-						<li>
-							<a
-								class="grid auto-cols-min gap-8 grid-flow-col hover:text-primary-light"
-								href="/en"
-								hreflang="en"
-							>
-								<span><FlagUS /></span>
-								<span>English</span>
-							</a>
-						</li>
-						<li>
-							<a
-								class="grid auto-cols-min gap-8 grid-flow-col hover:text-primary-light"
-								href="/pt"
-								hreflang="pt"
-							>
-								<span><FlagBr /></span>
-								<span>Português</span>
-							</a>
-						</li>
+						{#if language !== 'en'}
+							<li>
+								<a
+									class="grid auto-cols-min gap-8 grid-flow-col hover:text-primary-light"
+									href="/en"
+									hreflang="en"
+								>
+									<span><FlagUS /></span>
+									<span>English</span>
+								</a>
+							</li>
+						{/if}
+						{#if language !== 'es'}
+							<li>
+								<a
+									class="grid auto-cols-min gap-8 grid-flow-col hover:text-primary-light"
+									href="/es"
+									hreflang="es"
+								>
+									<span><FlagGS /></span>
+									<span>Español</span>
+								</a>
+							</li>
+						{/if}
+						{#if language !== 'pt'}
+							<li>
+								<a
+									class="grid auto-cols-min gap-8 grid-flow-col hover:text-primary-light"
+									href="/pt"
+									hreflang="pt"
+								>
+									<span><FlagBr /></span>
+									<span>Português</span>
+								</a>
+							</li>
+						{/if}
 					</ul>
 				</nav>
 			{/if}

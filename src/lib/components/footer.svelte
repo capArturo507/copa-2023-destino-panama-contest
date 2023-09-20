@@ -6,6 +6,10 @@
 	import LogoCopaFooter from './logo-copa-footer.svelte';
 	import LogoPanam from './logo-panam.svelte';
 	export let copyright: string;
+	export let rulesUrl: string;
+	export let rules: string;
+	export let privacyUrl: string;
+	export let privacy: string;
 </script>
 
 <footer class="py-32 bg-grey-100">
@@ -71,18 +75,18 @@
 			<ul class="grid gap-16 auto-cols-auto justify-start grid-flow-col text-12/16">
 				<li>
 					<a
-						href="/es/reglas"
+						href={rulesUrl}
 						target="_blank"
 						class="text-primary-light hover:underliene transition-all"
 					>
-						<span>Reglas del Concurso</span>
+						<span>{rules}</span>
 					</a>
 					<a
-						href="https://www.copaair.com/es-gs/legal/terminos-y-condiciones/politica-de-privacidad/"
+						href={privacyUrl}
 						target="_blank"
 						class="text-primary-light hover:underliene transition-all"
 					>
-						<span>Política de Privacidad</span>
+						<span>{privacy}</span>
 					</a>
 				</li>
 			</ul>

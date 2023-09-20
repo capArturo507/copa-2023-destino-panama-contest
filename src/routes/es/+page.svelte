@@ -4,6 +4,9 @@
 	let language = 'es';
 </script>
 
+<svelte:head>
+	<title>Concurso destino Panamá - Copa Airlines</title>
+</svelte:head>
 <HomeHero video="./promo-video-es.mp4" {language} />
 <div
 	class="container mx-auto grid auto-rows-min my-32 sm:my-48 md:my-64 lg:my-72 gap-32 sm:gap-48 md:gap-64 lg:gap-72 text-grey-600"
@@ -64,6 +67,18 @@
 				/> Estad&iacute;a de 3 noches en hoteles seleccionados de Panam&aacute;
 			</li>
 		</ul>
+		<nav>
+			<ul
+				class="grid grid-cols-[auto_auto] grid-flow-col gap-16 md:gap-24 justify-start my-24 md:my-32"
+			>
+				<li>
+					<a class="button" href="/es/registro">Participar</a>
+				</li>
+				<li>
+					<a class="button button-outline-primary" href="/es/reglas">Leer las reglas</a>
+				</li>
+			</ul>
+		</nav>
 	</div>
 	<div>
 		<h2

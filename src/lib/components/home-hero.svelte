@@ -51,6 +51,7 @@
 		>
 			<video
 				src={video}
+				poster="./video-poster.jpg"
 				title="Concurso destino Panamá"
 				class="w-screen h-auto sm:w-full"
 				bind:this={videoTag}
