@@ -8,8 +8,6 @@
 
 	const { content, language } = data;
 
-	console.log(content);
-
 	const toIDObject = (content: any) => {
 		const id = prop('id', content);
 		const restOfObejct = dissoc('id', content);

@@ -9,8 +9,6 @@ export async function handle({ event, resolve }) {
 
 	const languageFromCookie = cookies.get(COOKIE_LANGUAGE);
 
-	console.log('en hook');
-
 	if (languageFromCookie) locals.language = languageFromCookie;
 
 	if (url.pathname === '/change-language') {
