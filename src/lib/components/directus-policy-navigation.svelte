@@ -19,7 +19,7 @@
 	<ul class="grid gap-16 auto-cols-auto justify-start grid-flow-col text-12/16">
 		{#each links as link}
 			{@const { links_id } = link}
-			{@const text = languageFilter(link.links_id.translations)}
+			{@const text = languageFilter(links_id.translations)}
 			<li>
 				<a href={text.url} class="text-primary-light hover:underliene transition-all">
 					<span>{text.text}</span>
