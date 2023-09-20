@@ -14,6 +14,8 @@
 	sharetext="Comparte el concurso"
 	corrects={8}
 	timeinms={86400000}
+	shareTitle="Concurso destino Panamá con Copa Airlines"
+	shareText="¡Participa y conviértete en uno de los 10 ganadores de un viaje a Panamá!"
 />
 <div class="container mx-auto my-32">
 	<Sponsors title="Patrocinadores" />

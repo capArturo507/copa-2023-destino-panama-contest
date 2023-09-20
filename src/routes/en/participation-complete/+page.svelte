@@ -14,6 +14,8 @@
 	sharetext="Share the contest"
 	corrects={8}
 	timeinms={86400000}
+	shareTitle="Panama Destination Contest with Copa Airlines"
+	shareText="Participate and become one of the 10 winners to receive a free trip to Panama!"
 />
 <div class="container mx-auto my-32">
 	<Sponsors title="Sponsors" />
