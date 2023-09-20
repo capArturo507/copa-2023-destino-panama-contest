@@ -38,6 +38,7 @@
 		"@planetscale/database": "^1.11.0",
 		"@upstash/ratelimit": "^0.4.4",
 		"@upstash/redis": "^1.22.0",
+		"cmds-component-icons": "^2.0.0",
 		"cmds-tailwind-styles": "^1.1.6",
 		"date-fns": "^2.30.0",
 		"date-fns-tz": "^2.0.0",

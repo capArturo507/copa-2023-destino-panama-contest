@@ -4,17 +4,9 @@
 	import PauseIcon from './pause-icon.svelte';
 	import { fade, slide } from 'svelte/transition';
 	import { onMount } from 'svelte';
-	import { filterCurrentLanguage } from '$lib/directus-utilts';
 
-	export let content: any;
 	export let video: string;
 	export let language: string;
-
-	const { translations } = content;
-
-	const currentTransaltion = filterCurrentLanguage(language)(translations);
-
-	const { title, description } = currentTransaltion;
 
 	let videoTag: HTMLVideoElement;
 	let isVideoPlaying: boolean = false;
@@ -59,7 +51,7 @@
 		>
 			<video
 				src={video}
-				{title}
+				title="Concurso destino Panamá"
 				class="w-screen h-auto sm:w-full"
 				bind:this={videoTag}
 				on:pause={stopVideo}
@@ -103,10 +95,28 @@
 				<h1
 					class="font-heading font-heading-medium text-h1 sm:text-h1-sm md:text-h1-md lg:text-h1-lg text-grey-0 caret-transparent max-w-prose"
 				>
-					{title}
+					{#if language === 'es'}
+						Concurso destino Panamá
+					{:else if language === 'en'}
+						Panama Destination Contest
+					{:else}
+						Concurso destino Panamá
+					{/if}
 				</h1>
 				<p class="font-body text-grey-100 pt-8 pb-16 caret-transparent max-w-prose">
-					{@html description}
+					{#if language === 'es'}
+						&iexcl;Participa y convi&eacute;rtete en uno de los 10 ganadores de un viaje a
+						Panam&aacute;! El premio incluye dos (2) boletos ida y vuelta, uno para el ganador y uno
+						para su acompa&ntilde;ante y estad&iacute;as en hoteles por 3 noches.
+					{:else if language === 'en'}
+						Participate and become one of the 10 winners to receive a free trip to Panama! The prize
+						includes two (2) round-trip tickets (one for the winner and one for their companion),
+						and a complimentary 3-night hotel stay.
+					{:else}
+						Participe e torne-se um dos 10 vencedores de uma viagem ao Panam&aacute;! O pr&ecirc;mio
+						inclui dois (2) bilhetes de ida e volta, um para o vencedor e outro para seu
+						acompanhante, e estadias em hot&eacute;is por 3 noites.
+					{/if}
 				</p>
 				<div class="block w-24 mx-auto animate-bounce sm:mx-0 sm:hidden">
 					<ChevronDown />
