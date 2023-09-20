@@ -5,7 +5,7 @@ import {
 	getRulesData,
 	getstepsHeadersData
 } from '$lib/server/data/get-data-with-cache.js';
-import { getTimeToEndInSeconds } from '$lib/server/utils.js';
+import { getPagesSetings, getTimeToEndInSeconds } from '$lib/server/utils.js';
 
 /** @type {import('./$types').PageLoad} */
 export async function load({ locals, params, cookies, parent }) {
@@ -27,6 +27,8 @@ export async function load({ locals, params, cookies, parent }) {
 		});
 
 	const parentData = await parent();
+
+	console.log(getPagesSetings(parentData));
 
 	return {
 		questions: questions(),

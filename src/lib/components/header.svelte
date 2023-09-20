@@ -76,6 +76,7 @@
 									<li class="my-16">
 										<a
 											href={linkTranslation.url}
+											data-sveltekit-reload
 											hreflang={linkLang}
 											class="grid gap-4 auto-cols-min grid-flow-col items-center text-grey-600 hover:text-primary-light transition-colors"
 										>

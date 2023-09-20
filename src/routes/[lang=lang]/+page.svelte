@@ -2,7 +2,7 @@
 	import HomeHero from '$lib/components/home-hero.svelte';
 	import { filterCurrentLanguage } from '$lib/directus-utilts';
 	import type { PageData } from './$types';
-	import { dissoc, map, objOf, prop, reduce } from 'ramda';
+	import { dissoc, map, objOf, prop, reduce, tail } from 'ramda';
 
 	export let data: PageData;
 
@@ -55,7 +55,7 @@
 						{@const pctaCTranslation = filterCurrentLanguage(language)(pctaTranslations)}
 						{@const { text, url } = pctaCTranslation}
 						<li>
-							<a href={url} class="button">{text}</a>
+							<a href={language + url} class="button">{text}</a>
 						</li>
 					{/if}
 					{#if secondary_cta}
@@ -63,7 +63,7 @@
 						{@const pctaCTranslation = filterCurrentLanguage(language)(pctaTranslations)}
 						{@const { text, url } = pctaCTranslation}
 						<li>
-							<a href={url} class="button button-outline-primary">{text}</a>
+							<a href={language + url} class="button button-outline-primary">{text}</a>
 						</li>
 					{/if}
 				</ul>

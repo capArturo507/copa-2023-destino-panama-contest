@@ -2,7 +2,7 @@ import { CONTEST_END_DATE, TIMEZONE } from '$env/static/private';
 import { now } from '$lib/utils';
 import { differenceInSeconds } from 'date-fns';
 import { toDate } from 'date-fns-tz';
-import { __, find, includes, map, pipe, prop, replace, split, uniq } from 'ramda';
+import { __, find, includes, map, path, pipe, prop, replace, split, uniq } from 'ramda';
 import { curry, invoker } from 'ramda';
 
 export const setCookie = invoker(3, 'set');
@@ -34,3 +34,8 @@ const replaceNonLanguage = replace(/(-.*$)|(;.*$)/g, '');
 export const processHeaderLanguage = pipe(splitWiithComma, map(replaceNonLanguage), uniq);
 
 export const findInArray = (firstArray: any[]) => find(includes(__, firstArray));
+
+export const getPagesSetings = pipe(
+	path(['siteData', 'data', 'pages']),
+	map(path(['pages_id', 'language_settings']))
+);

@@ -97,7 +97,7 @@ const logoFields = ['code'];
 
 const siteFields = [
 	{ supported_languages: ['lang_code'] },
-	{ pages: [{ pages_id: [{ language_settings: ['title_tag', 'url_slug'] }] }] }
+	{ pages: [{ pages_id: [{ language_settings: ['title_tag', 'url_slug', 'lang_code'] }] }] }
 ];
 
 const setDirectusSiteQuery = () =>
@@ -194,7 +194,7 @@ const setDirectusQuestionsQuery = () =>
 export const getQuestionsData = () =>
 	getDataFromCacheOr3Party(DIRECTUS_QUESTIONS, setDirectusQuestionsQuery, getTimeToEndInSeconds());
 
-const rules = [{ translations: ['languages_code', 'title', 'description'] }];
+const rules = ['id', { translations: ['languages_code', 'title', 'description'] }];
 
 const setDirectusRulesQuery = () =>
 	directus.request(readItem(DIRECTUS_CONTENT, DIRECTUS_RULES_ID, { fields: rules }));

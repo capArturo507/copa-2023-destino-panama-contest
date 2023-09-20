@@ -1,9 +1,9 @@
 import { COOKIE_LANGUAGE, NODE_ENV } from '$env/static/private';
 import { getHomeData } from '$lib/server/data/get-data-with-cache.js';
-import { getTimeToEndInSeconds } from '$lib/server/utils.js';
+import { getPagesSetings, getTimeToEndInSeconds } from '$lib/server/utils.js';
 
 /** @type {import('./$types').PageLoad} */
-export async function load({ locals, params, cookies }) {
+export async function load({ locals, params, cookies, parent }) {
 	const content = () => getHomeData();
 
 	const languageFromParam = params.lang;
@@ -17,6 +17,12 @@ export async function load({ locals, params, cookies }) {
 			sameSite: 'strict',
 			secure: NODE_ENV === 'production'
 		});
+
+	const parentData = await parent();
+
+	const pages = getPagesSetings(parentData);
+
+	console.log('yo', pages);
 
 	return {
 		content: content(),
