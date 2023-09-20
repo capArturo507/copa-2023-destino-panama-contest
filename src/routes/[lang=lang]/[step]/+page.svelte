@@ -6,4 +6,4 @@
 	const { questions, rules, stepsHeaders, form } = data;
 </script>
 
-Hey pero y entonces?
+Hey pero y entonces
