@@ -1,4 +1,5 @@
 <script>
+	import Form from '$lib/components/form.svelte';
 	import StepHero from '$lib/components/step-hero.svelte';
 	const step = 'Paso 1 de 3';
 	const title = 'Llena tus datos';
@@ -10,3 +11,6 @@
 	<title>Llena tus datos</title>
 </svelte:head>
 <StepHero {step} {title} {description} />
+<div class="container mx-auto my-32">
+	<Form />
+</div>

@@ -1,7 +1,7 @@
 <svelte:head>
 	<title>Regras do Concurso</title>
 </svelte:head>
-<div class="pt-64 pb-32 text-grey-0 bg-primary text-grey-0">
+<div class="pt-64 pb-32 text-grey-0 bg-primary">
 	<div class="container mx-auto mt-32">
 		<h1>
 			<p>
