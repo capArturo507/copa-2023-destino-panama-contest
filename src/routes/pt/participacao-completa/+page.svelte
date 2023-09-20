@@ -4,13 +4,13 @@
 </script>
 
 <svelte:head>
-	<title>Gracias por participar</title>
+	<title>Obrigado por participar</title>
 </svelte:head>
 <CompletedHero
 	step="Paso 3 de 3"
-	opening="Has contestado correctamente"
+	opening="Você respondeu corretamente"
 	middle="preguntas, en"
-	closing="¡Ya estas participando!"
+	closing="Você já está participando!"
 	sharetext="Comparte el concurso"
 	corrects={8}
 	timeinms={86400000}

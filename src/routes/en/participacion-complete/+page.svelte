@@ -4,17 +4,17 @@
 </script>
 
 <svelte:head>
-	<title>Gracias por participar</title>
+	<title>Thanks for participating</title>
 </svelte:head>
 <CompletedHero
-	step="Paso 3 de 3"
-	opening="Has contestado correctamente"
-	middle="preguntas, en"
-	closing="¡Ya estas participando!"
-	sharetext="Comparte el concurso"
+	step="Step 3 of 3"
+	opening="You answered correctly"
+	middle="questions, in"
+	closing="You are already participating!"
+	sharetext="Share the contest"
 	corrects={8}
 	timeinms={86400000}
 />
 <div class="container mx-auto my-32">
-	<Sponsors title="Patrocinadores" />
+	<Sponsors title="Sponsors" />
 </div>

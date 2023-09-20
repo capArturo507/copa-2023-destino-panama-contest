@@ -7,7 +7,7 @@
 		'https://www.copaair.com/es-gs/legal/terminos-y-condiciones/politica-de-privacidad/';
 	const privacy = 'Política de Privacidad';
 	const rules = 'Reglas del Concurso';
-	const rulesUrl = '/pt/reglas';
+	const rulesUrl = '/es/reglas';
 </script>
 
 <Header language="es" />
