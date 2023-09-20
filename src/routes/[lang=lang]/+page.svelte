@@ -8,6 +8,8 @@
 
 	const { content, language } = data;
 
+	console.log(content);
+
 	const toIDObject = (content: any) => {
 		const id = prop('id', content);
 		const restOfObejct = dissoc('id', content);
@@ -21,7 +23,7 @@
 		return { ...concatenated, ...newObj };
 	};
 
-	const contentUpdated = reduce(concatObjects, {}, mapToIdObject(content));
+	const contentUpdated = reduce(concatObjects, {}, mapToIdObject(content?.data));
 
 	const orderderContent = [10, 11, 9, 12];
 </script>
@@ -30,9 +32,9 @@
 
 {#each orderderContent as section}
 	{@const sectionContent = contentUpdated[section]}
-	{@const { translations } = sectionContent}
+	{@const { translations, primary_cta, secondary_cta } = sectionContent}
 	{@const currenLangTranslation = filterCurrentLanguage(language)(translations)}
-	{@const { title, description, primary_cta, secondary_cta } = currenLangTranslation}
+	{@const { title, description } = currenLangTranslation}
 	{@const className = [10, 11].includes(section)
 		? 'icons-list'
 		: section === 9

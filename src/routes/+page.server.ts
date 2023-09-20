@@ -1,11 +1,23 @@
-import { COOKIE_LANGUAGE } from '$env/static/private';
+import { findInArray, getSupportedlanguages, processHeaderLanguage } from '$lib/server/utils.js';
 import { redirect } from '@sveltejs/kit';
 
 /** @type {import('./$types').PageLoad} */
-export function load({ cookies }) {
-  const savedLanguage = cookies.get(COOKIE_LANGUAGE)
+export async function load({ locals, parent, request }) {
+	const parentData = await parent();
 
-  if (savedLanguage &&)
+	if (locals.language) throw redirect(303, `/${locals.language}`);
 
-	if ()
+	const supportedLanguages = getSupportedlanguages(parentData.siteData);
+
+	const browserLanguages = request.headers.get('Accept-Language');
+
+	if (!browserLanguages) throw redirect(303, `/${supportedLanguages[0]}`);
+
+	const processedBrowserLanguage = processHeaderLanguage(browserLanguages);
+
+	const matchFirstPreference = findInArray(supportedLanguages)(processedBrowserLanguage);
+
+	if (matchFirstPreference) throw redirect(303, `/${matchFirstPreference}`);
+
+	throw redirect(303, `/${supportedLanguages[0]}`);
 }

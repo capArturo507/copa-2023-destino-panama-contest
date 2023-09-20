@@ -7,13 +7,11 @@ let a = 1;
 export async function handle({ event, resolve }) {
 	const { url, cookies, locals } = event;
 
-	console.log('yo yo yo');
+	const languageFromCookie = cookies.get(COOKIE_LANGUAGE);
 
-	console.log(a);
+	console.log('en hook');
 
-	a++;
-
-	locals.language = cookies.get(COOKIE_LANGUAGE);
+	if (languageFromCookie) locals.language = languageFromCookie;
 
 	if (url.pathname === '/change-language') {
 		const openStatus = cookies.get('openLanguageNav');

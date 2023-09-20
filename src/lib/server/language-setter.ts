@@ -42,13 +42,9 @@ export const setLanguage = (event: RequestEvent, site: any) => {
 
 	const localsLang = locals.language;
 
-	console.log(paramLanguage, browserLanguage, localsLang);
-
 	if (paramLanguage === localsLang) return; //nada que cambiar
 
 	if (!!paramLanguage) return setLanguageCookie(paramLanguage, cookies);
-
-	console.log('you should be not doing this');
 
 	setLanguage(determineInitialLanguage(browserLanguage, site), cookies);
 

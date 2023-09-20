@@ -6,11 +6,11 @@
 
 	export let data: LayoutData;
 
-	const { header, footer, language, openLanguageNav } = data;
+	const { header, footer, language } = data;
 </script>
 
-<Header {header} {language} {openLanguageNav} />
+<Header header={header.data} {language} openLanguageNav="close" />
 <main class="min-h-screen bg-bg-paper">
-	<slot><!-- optional fallback --></slot>
+	<slot />
 </main>
-<Footer {footer} {language} />
+<Footer footer={footer.data} {language} />

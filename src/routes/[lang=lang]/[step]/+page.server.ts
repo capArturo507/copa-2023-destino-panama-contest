@@ -1,10 +1,18 @@
 import { COOKIE_LANGUAGE, NODE_ENV } from '$env/static/private';
-import { getHomeData } from '$lib/server/data/get-data-with-cache.js';
+import {
+	getDirectusFormData,
+	getQuestionsData,
+	getRulesData,
+	getstepsHeadersData
+} from '$lib/server/data/get-data-with-cache.js';
 import { getTimeToEndInSeconds } from '$lib/server/utils.js';
 
 /** @type {import('./$types').PageLoad} */
-export async function load({ locals, params, cookies }) {
-	const content = () => getHomeData();
+export async function load({ locals, params, cookies, parent }) {
+	const questions = () => getQuestionsData();
+	const form = () => getDirectusFormData();
+	const rules = () => getRulesData();
+	const stepsHeaders = () => getstepsHeadersData();
 
 	const languageFromParam = params.lang;
 
@@ -18,8 +26,12 @@ export async function load({ locals, params, cookies }) {
 			secure: NODE_ENV === 'production'
 		});
 
+	const parentData = await parent();
+
 	return {
-		content: content(),
-		language: languageFromParam
+		questions: questions(),
+		rules: rules(),
+		stepsHeaders: stepsHeaders(),
+		form: form()
 	};
 }
