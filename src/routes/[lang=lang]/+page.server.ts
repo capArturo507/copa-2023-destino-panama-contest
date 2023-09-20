@@ -22,8 +22,6 @@ export async function load({ locals, params, cookies, parent }) {
 
 	const pages = getPagesSetings(parentData);
 
-	console.log('yo', pages);
-
 	return {
 		content: content(),
 		language: languageFromParam
