@@ -27,6 +27,28 @@
 
 		return result.join(' ');
 	};
+
+	export let shareTitle: string;
+	export let shareText: string;
+
+	const shareURL =
+		'https://www.destinopanamacopa.com/?utm_source=direct&utm_medium=share+link&utm_campaign=organic+share';
+
+	const setURLtoClipboard = () => navigator.clipboard.writeText(shareURL);
+
+	const share = () => {
+		if (navigator.share) {
+			return navigator
+				.share({
+					title: shareTitle,
+					text: shareText,
+					url: shareURL
+				})
+				.catch(setURLtoClipboard);
+		}
+
+		return setURLtoClipboard();
+	};
 </script>
 
 <div class="pt-64 pb-32 lg:pb-64 text-grey-0 bg-primary">
@@ -44,20 +66,18 @@
 			{closing} 🤞
 		</p>
 		<button
-			class="button button-outline-invert grid grid-flow-col auto-cols-auto justify-start mx-auto"
+			on:click={share}
+			class="button button-outline-invert grid grid-flow-col auto-cols-auto justify-start mx-auto fill-current"
 		>
 			<svg
-				width="21"
-				height="20"
+				class="pointer-events-none square-20"
 				viewBox="0 0 21 20"
-				fill="none"
 				xmlns="http://www.w3.org/2000/svg"
 			>
 				<path
 					fill-rule="evenodd"
 					clip-rule="evenodd"
 					d="M8.05569 6.34853L7.10644 5.60868L10.4297 2.24359L13.9124 5.60868L13.0453 6.34853L11.1264 4.47395V12.9096H9.75178V4.47395L8.05569 6.34853ZM7.40834 8.35686H6.12889H4.66666V9.74544V16.6878V17.0768V18.0763H16.3333V17.2091H16.334V8.35687H15.9761V8.35686H13.2344V9.74544H14.8717V16.6878H6.12889V9.74544H7.40834V8.35686Z"
-					fill="white"
 				/>
 			</svg>
 			{sharetext}
