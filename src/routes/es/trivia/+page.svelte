@@ -21,17 +21,17 @@
 	<title>Contesta las preguntas</title>
 </svelte:head>
 <StepHero {step} {title} {description} />
-<div class="container mx-auto my-32">
-	<form method="POST">
-		<ol class="text-grey-600">
-			{#each selectedQuestions as question, index}
-				<TriviaQuestion {question} {language} {index} />
-			{/each}
-		</ol>
-		<button
-			type="submit"
-			class="button button-large w-full sm:max-w-[calc(132px_*_3)] mx-auto block lg:inline"
-			>Enviar mis respuestas</button
-		>
-	</form>
+<div class="bg-backgound-lightblue py-32">
+	<div class="container mx-auto my-32">
+		<form method="POST" class="mx-auto block md:w-max">
+			<ol class="text-grey-600">
+				{#each selectedQuestions as question, index}
+					<TriviaQuestion {question} {language} {index} />
+				{/each}
+			</ol>
+			<button type="submit" class="button button-large w-full md:max-w-xl mx-auto block lg:inline"
+				>Enviar mis respuestas</button
+			>
+		</form>
+	</div>
 </div>

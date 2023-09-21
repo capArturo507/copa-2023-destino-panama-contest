@@ -118,8 +118,9 @@ export async function load({ locals, setHeaders, cookies }) {
 
 export const actions = {
 	default: async ({ cookies, request }) => {
-		const data = await request.formData();
+		const data = Object.fromEntries(await request.formData());
 		const completedDateTime = nowInPanamaFormatted();
-		const answers = Array.from(data.entries());
+
+		console.log(data);
 	}
 } satisfies Actions;

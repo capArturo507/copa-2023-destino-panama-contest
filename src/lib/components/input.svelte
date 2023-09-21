@@ -19,7 +19,7 @@
 <div
 	class="grid grid-cols-[auto_1fr] grid-rows-[auto_1fr_auto] justify-start items-start gap-8 max-w-lg"
 >
-	<img src={imagSource} alt={name} class="square-40 row-span-2" />
+	<img src={imagSource} alt={name} class="square-40 row-span-2 self-end" />
 	<label class="text-12/16 text-grey-600 font-body-medium" for={name}>{label}</label>
 	{#if type === 'text'}
 		<input
