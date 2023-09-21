@@ -61,7 +61,7 @@ export async function load({ locals, setHeaders, cookies }) {
 		}
 
 		if (resultado.length > 1) {
-			console.warn('Resultados parciales', buscarParticipacion, resultado);
+			console.error('Resultados parciales', buscarParticipacion, resultado);
 			const alert = configurarAlerta(
 				'error',
 				'Los datos que ingresaste coinciden parcialmente con los que guardamos, solo podrás continuar si introduces los datos iniciales.'

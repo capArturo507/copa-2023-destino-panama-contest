@@ -41,7 +41,7 @@ export const actions = {
 				'error',
 				'Los datos que ingresaste no son válidos. por favor intenta nuevamente'
 			);
-			console.warn('Formato invalid del reporte', error, data);
+			console.error('Formato invalid del reporte', error, data);
 			locals.alerta = alert;
 			cookies.set(COOKIE_TOST, JSON.stringify(alert), getCookieSettings(5));
 			return fail(400, data);
@@ -122,7 +122,7 @@ export const actions = {
 				'error',
 				'Los datos que ingresaste coinciden parcialmente con los que guardamos, solo podrás continuar si introduces los datos iniciales.'
 			);
-			console.warn('Resultados parciales', data, dbDataRows);
+			console.error('Resultados parciales', data, dbDataRows);
 			locals.alerta = alert;
 			cookies.set(COOKIE_TOST, JSON.stringify(alert), getCookieSettings(5));
 			return fail(400, {});
@@ -135,7 +135,7 @@ export const actions = {
 				'error',
 				'Ocurrio un error inesperado, intenta nuevamente más tarde.'
 			);
-			console.warn('No data in rowr', getDBDAta, data);
+			console.error('No data in rowr', getDBDAta, data);
 			locals.alerta = alert;
 			cookies.set(COOKIE_TOST, JSON.stringify(alert), getCookieSettings(5));
 			return fail(500, data);
