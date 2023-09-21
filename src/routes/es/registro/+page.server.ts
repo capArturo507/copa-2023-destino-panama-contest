@@ -32,8 +32,6 @@ export const actions = {
 	default: async ({ cookies, request, locals }) => {
 		let data = Object.fromEntries(await request.formData());
 
-		//TODO Primero se valida que no tenga cookies y que la data esta bien
-
 		try {
 			registrationSchema.parse(data);
 		} catch (error) {
@@ -46,8 +44,6 @@ export const actions = {
 			cookies.set(COOKIE_TOST, JSON.stringify(alert), getCookieSettings(5));
 			return fail(400, data);
 		}
-
-		// Si todo esta bien buscamos las preguntas
 
 		const questionsRequestResponse = await getQuestionsData().catch((e) => {
 			console.error(e);

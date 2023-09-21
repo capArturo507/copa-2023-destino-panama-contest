@@ -144,6 +144,33 @@ declare global {
 		type Footer = {
 			storefront: Array<FooterStorefront>;
 		};
+
+		type QuestionTranslations = {
+			prompt: string;
+			languages_code: string;
+		};
+
+		type StatementTranslation = {
+			statement: string;
+			languages_code: string;
+		};
+
+		type Statement = {
+			id: number;
+			translations: StatementTranslation[];
+		};
+
+		type QuestionAnswer = {
+			correct_answer: boolean;
+			statement_id: Statement;
+		};
+
+		type Question = {
+			id: number;
+			category: number;
+			translations: QuestionTranslations[];
+			Answers: QuestionAnswer[];
+		};
 	}
 
 	type ObjectWithMessage = {

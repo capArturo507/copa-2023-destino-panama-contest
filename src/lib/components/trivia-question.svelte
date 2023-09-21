@@ -1,34 +1,7 @@
 <script lang="ts">
 	import { filter, head, ifElse, isEmpty, path, pipe, prop, propEq } from 'ramda';
 
-	type QuestionTranslations = {
-		prompt: string;
-		languages_code: string;
-	};
-
-	type StatementTranslation = {
-		statement: string;
-		languages_code: string;
-	};
-
-	type Statement = {
-		id: number;
-		translations: StatementTranslation[];
-	};
-
-	type QuestionAnswer = {
-		correct_answer: boolean;
-		statement_id: Statement;
-	};
-
-	type Question = {
-		id: number;
-		category: number;
-		translations: QuestionTranslations[];
-		Answers: QuestionAnswer[];
-	};
-
-	export let question: Question;
+	export let question: Directus.Question;
 	export let language: string;
 	export let index: number;
 
@@ -50,7 +23,7 @@
 
 	const getStatementOrNotFound = ifElse(isEmpty, () => 'not found', getAnswerStatement);
 
-	const getAnswerCorrectTranslation = (translations: StatementTranslation[]) =>
+	const getAnswerCorrectTranslation = (translations: Directus.StatementTranslation[]) =>
 		getStatementOrNotFound(filter(isSameLanguage, translations));
 
 	const getAnswerTranslation = pipe(getAnswerTranslationProp, getAnswerCorrectTranslation);

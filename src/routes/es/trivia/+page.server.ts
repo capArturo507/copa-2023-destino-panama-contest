@@ -3,10 +3,11 @@ import { getQuestionsData } from '$lib/server/get-questions.js';
 import { requestStoredData } from '$lib/server/planetscale.js';
 import { getCookieSettings, validarEstadoDelApp } from '$lib/server/utils.js';
 import { configurarAlerta } from '$lib/utils.js';
-import { redirect } from '@sveltejs/kit';
-import { isEmpty, isNil, split } from 'ramda';
+import { fail, redirect } from '@sveltejs/kit';
+import { find, isEmpty, isNil, keys, map, path, propEq, split } from 'ramda';
 import type { Actions } from './$types';
 import { nowInPanamaFormatted } from '$lib/server/timezone';
+import { z } from 'zod';
 
 /** @type {import('./$types').PageServerLoad} */
 export async function load({ locals, setHeaders, cookies }) {
@@ -116,11 +117,60 @@ export async function load({ locals, setHeaders, cookies }) {
 	};
 }
 
+const triviaSchema = z.record(z.string().regex(/\d+/));
+
 export const actions = {
-	default: async ({ cookies, request }) => {
+	default: async ({ cookies, locals, request }) => {
 		const data = Object.fromEntries(await request.formData());
 		const completedDateTime = nowInPanamaFormatted();
 
-		console.log(data);
+		try {
+			triviaSchema.parse(data);
+		} catch (error) {
+			const alert = configurarAlerta(
+				'error',
+				'Ocurrió un error al intentar enviar tus preguntas, refresca el navegador en intenta nuevamente por favor.'
+			);
+			console.error('Formato invalid del reporte', error, data);
+			locals.alerta = alert;
+			cookies.set(COOKIE_TOST, JSON.stringify(alert), getCookieSettings(5));
+			return fail(400, data);
+		}
+
+		const getAllQuestionsRequest = await getQuestionsData().catch((error) => {
+			console.error('Error al intentar buscar las preguntas', error, data);
+			return null;
+		});
+
+		if (!getAllQuestionsRequest) {
+			const alert = configurarAlerta(
+				'error',
+				'Ocurrió un error al intentar enviar tus preguntas, refresca el navegador en intenta nuevamente por favor.'
+			);
+			locals.alerta = alert;
+			cookies.set(COOKIE_TOST, JSON.stringify(alert), getCookieSettings(5));
+			return fail(500, data);
+		}
+
+		const allQuestions = getAllQuestionsRequest.data as Directus.Question[];
+
+		const answeredQuestionsId = keys(data);
+
+		const findSelectedQuestion = (id: string) => find(propEq(parseInt(id), 'id'))(allQuestions);
+
+		const selectedQuestions = map(findSelectedQuestion, answeredQuestionsId);
+
+		const getAnswerID = path(['statement_id', 'id']);
+
+		const mapToAnswers = (question: Directus.Question) => {
+			const { id, Answers } = question;
+			const answerId = data[id];
+			const findAnswer = '';
+			return {
+				question: id,
+				answer: answerId,
+				status: ''
+			};
+		};
 	}
 } satisfies Actions;
