@@ -66,7 +66,7 @@ const questionsFields = [
 	'category',
 	{ translations: ['prompt', 'languages_code'] },
 	{
-		answers: [
+		Answers: [
 			'correct_answer',
 			{ statement_id: ['id', { translations: ['statement', 'languages_code'] }] }
 		]

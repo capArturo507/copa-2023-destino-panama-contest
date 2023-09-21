@@ -5,28 +5,27 @@ import { getCookieSettings, validarEstadoDelApp } from '$lib/server/utils.js';
 import { configurarAlerta } from '$lib/utils.js';
 import { redirect } from '@sveltejs/kit';
 import { isEmpty, isNil, split } from 'ramda';
+import type { Actions } from './$types';
+import { nowInPanamaFormatted } from '$lib/server/timezone';
 
 /** @type {import('./$types').PageServerLoad} */
 export async function load({ locals, setHeaders, cookies }) {
 	const estado = validarEstadoDelApp(locals);
 
 	if (estado === 'participó') {
-		cookies.set(
-			COOKIE_TOST,
-			JSON.stringify(configurarAlerta('info', 'Ya estas participando.')),
-			getCookieSettings(5)
-		);
+		const alert = configurarAlerta('info', 'Ya estas participando.');
+		locals.alerta = alert;
+		cookies.set(COOKIE_TOST, JSON.stringify(alert), getCookieSettings(5));
 		throw redirect(303, '/es/participacion-completa');
 	}
 
 	if (estado === 'sin participar') {
-		cookies.set(
-			COOKIE_TOST,
-			JSON.stringify(
-				configurarAlerta('advertencia', 'Es necesario que introduzcas tu información nuevamente.')
-			),
-			getCookieSettings(5)
+		const alert = configurarAlerta(
+			'advertencia',
+			'Es necesario que introduzcas tu información nuevamente.'
 		);
+		locals.alerta = alert;
+		cookies.set(COOKIE_TOST, JSON.stringify(alert), getCookieSettings(5));
 		throw redirect(303, '/es/registro');
 	}
 
@@ -39,16 +38,12 @@ export async function load({ locals, setHeaders, cookies }) {
 				error,
 				locals.participation
 			);
-			cookies.set(
-				COOKIE_TOST,
-				JSON.stringify(
-					configurarAlerta(
-						'advertencia',
-						'Ocurrió un erro al intentar buscar tu participación, intenta más tarde por favor.'
-					)
-				),
-				getCookieSettings(5)
+			const alert = configurarAlerta(
+				'advertencia',
+				'Ocurrió un erro al intentar buscar tu participación, intenta más tarde por favor.'
 			);
+			locals.alerta = alert;
+			cookies.set(COOKIE_TOST, JSON.stringify(alert), getCookieSettings(5));
 			throw redirect(303, '/es/registro');
 		});
 
@@ -56,31 +51,23 @@ export async function load({ locals, setHeaders, cookies }) {
 
 		if (isNil(resultado) || isEmpty(resultado)) {
 			console.error('La participacion en BD tiene un error', buscarParticipacion, resultado);
-			cookies.set(
-				COOKIE_TOST,
-				JSON.stringify(
-					configurarAlerta(
-						'error',
-						'Ocurrió un error inesperado, regalanos un tiempo para validar e intenta mas tarde por favor.'
-					)
-				),
-				getCookieSettings(5)
+			const alert = configurarAlerta(
+				'error',
+				'Ocurrió un error inesperado, regalanos un tiempo para validar e intenta mas tarde por favor.'
 			);
+			locals.alerta = alert;
+			cookies.set(COOKIE_TOST, JSON.stringify(alert), getCookieSettings(5));
 			throw redirect(303, '/es/registro');
 		}
 
 		if (resultado.length > 1) {
 			console.warn('Resultados parciales', buscarParticipacion, resultado);
-			cookies.set(
-				COOKIE_TOST,
-				JSON.stringify(
-					configurarAlerta(
-						'error',
-						'Los datos que ingresaste coinciden parcialmente con los que guardamos, solo podrás continuar si introduces los mismos datos.'
-					)
-				),
-				getCookieSettings(5)
+			const alert = configurarAlerta(
+				'error',
+				'Los datos que ingresaste coinciden parcialmente con los que guardamos, solo podrás continuar si introduces los datos iniciales.'
 			);
+			locals.alerta = alert;
+			cookies.set(COOKIE_TOST, JSON.stringify(alert), getCookieSettings(5));
 			throw redirect(303, '/es/registro');
 		}
 
@@ -88,16 +75,12 @@ export async function load({ locals, setHeaders, cookies }) {
 
 		if (isNil(primeraFila.questions) || isEmpty(primeraFila.questions)) {
 			console.error('La participacion en BD tiene un error', buscarParticipacion, resultado);
-			cookies.set(
-				COOKIE_TOST,
-				JSON.stringify(
-					configurarAlerta(
-						'error',
-						'Ocurrió un error inesperado, regalanos un tiempo para validar e intenta mas tarde por favor.'
-					)
-				),
-				getCookieSettings(5)
+			const alert = configurarAlerta(
+				'error',
+				'Ocurrió un error inesperado, regalanos un tiempo para validar e intenta mas tarde por favor.'
 			);
+			locals.alerta = alert;
+			cookies.set(COOKIE_TOST, JSON.stringify(alert), getCookieSettings(5));
 			throw redirect(303, '/es/registro');
 		}
 
@@ -113,16 +96,12 @@ export async function load({ locals, setHeaders, cookies }) {
 
 	if (isNil(allQuestions)) {
 		console.error('Por alguna razon no devolvio preguntas, revisa Directus');
-		cookies.set(
-			COOKIE_TOST,
-			JSON.stringify(
-				configurarAlerta(
-					'error',
-					'Ocurrió un error inesperado al intentar mostrar las preguntas, intenta introducir los mismos datos nuevamente por favor.'
-				)
-			),
-			getCookieSettings(5)
+		const alert = configurarAlerta(
+			'error',
+			'Ocurrió un error inesperado al intentar mostrar las preguntas, intenta introducir los mismos datos nuevamente por favor.'
 		);
+		locals.alerta = alert;
+		cookies.set(COOKIE_TOST, JSON.stringify(alert), getCookieSettings(5));
 		throw redirect(303, '/es/registro');
 	}
 
@@ -136,3 +115,14 @@ export async function load({ locals, setHeaders, cookies }) {
 		questions
 	};
 }
+
+export const actions = {
+	default: async ({ cookies, request }) => {
+		console.log('refferer', request);
+
+		const data = await request.formData();
+		const completedDateTime = nowInPanamaFormatted();
+		const answers = Array.from(data.entries());
+		console.log('form data', answers, completedDateTime);
+	}
+} satisfies Actions;

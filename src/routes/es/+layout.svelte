@@ -11,7 +11,7 @@
 </script>
 
 <Header language="es" />
-<main class="min-h-screen bg-bg-paper">
+<main class="bg-bg-paper">
 	<slot />
 </main>
 <Footer {copyright} {privacy} {privacyUrl} {rules} {rulesUrl} />
