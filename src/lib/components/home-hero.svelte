@@ -72,7 +72,7 @@
 					class="square-72 place-self-center"
 					title="play video"
 					on:click={playVideo}
-					in:fade={{ delay: 350 }}
+					in:fade|local={{ delay: 350 }}
 				>
 					<PlayButton />
 				</button>
@@ -81,7 +81,7 @@
 					class="square-24 self-end"
 					on:click={pauseVideo}
 					title="pausar video"
-					in:slide={{ delay: 350 }}
+					in:slide|local={{ delay: 350 }}
 				>
 					<PauseIcon />
 				</button>
@@ -91,7 +91,7 @@
 		{#if !isVideoPlaying || device !== 'xs'}
 			<div
 				class="container mx-auto h-auto w-full col-start-1 row-start-3 py-8 sm:row-start-2 sm:self-center sm:mx-0 md:col-start-2"
-				transition:slide
+				transition:slide|local
 			>
 				<h1
 					class="font-heading font-heading-medium text-h1 sm:text-h1-sm md:text-h1-md lg:text-h1-lg text-grey-0 caret-transparent max-w-prose"

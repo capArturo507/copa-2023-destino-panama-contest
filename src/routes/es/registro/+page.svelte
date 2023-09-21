@@ -5,6 +5,10 @@
 	const title = 'Llena tus datos';
 	const description =
 		'Solo tienes una oportunidad para participar con el mismo usuario de Instagram, correo electrónico o teléfono. El tiempo empieza a correr en cuanto se muestren las preguntas.';
+
+	export let form;
+
+	console.log('loging form', form);
 </script>
 
 <svelte:head>

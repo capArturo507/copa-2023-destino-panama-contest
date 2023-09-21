@@ -6,6 +6,9 @@
 	export let placeholder: string = '';
 	export let select: boolean = false;
 	export let label: string;
+	export let minlength: number | null | undefined = undefined;
+	export let maxlength: number | null | undefined = undefined;
+	export let pattern: string | undefined = undefined;
 
 	const inputClass =
 		'border-b-2 border-b-grey-100 bg-transparent py-2 text-20/32 hover:border-b-backgound-lightblue transition-colors text-grey-700 focus:outline-none focus:border-b-primary focus:bg-backgound-lightblue ';
@@ -16,11 +19,38 @@
 	<label class="text-12/16 text-grey-600 font-body-medium" for={name}>{label}</label>
 	{#if select}{/if}
 	{#if type === 'text'}
-		<input class={inputClass} type="text" {name} {placeholder} required />
+		<input
+			class={inputClass}
+			type="text"
+			{name}
+			{placeholder}
+			{minlength}
+			{maxlength}
+			{pattern}
+			required
+		/>
 	{:else if type === 'email'}
-		<input class={inputClass} type="email" {name} {placeholder} required />
+		<input
+			class={inputClass}
+			type="email"
+			{name}
+			{placeholder}
+			{minlength}
+			{maxlength}
+			{pattern}
+			required
+		/>
 	{:else if type === 'tel'}
-		<input class={inputClass} type="tel" {name} {placeholder} required />
+		<input
+			class={inputClass}
+			type="tel"
+			{name}
+			{placeholder}
+			{minlength}
+			{maxlength}
+			{pattern}
+			required
+		/>
 	{/if}
 
 	{#if error}

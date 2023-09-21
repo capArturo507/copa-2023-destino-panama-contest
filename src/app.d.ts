@@ -7,9 +7,20 @@ declare global {
 			language: string;
 			contestEndDate: Date;
 			cache: CacheValue;
+			questions: string[];
+			participation: any;
+			alerta: Alerta | undefined;
 		}
 		// interface PageData {}
 		// interface Platform {}
+		type TipoAlerta = 'info' | 'error' | 'advertencia' | 'exito';
+
+		type Alerta = {
+			tipo: TipoAlerta;
+			mensaje: string;
+		};
+
+		type AppStatus = 'sin participar' | 'participó' | 'participando' | 'participando sin preguntas';
 
 		type InputErrors = 'FORMAT' | 'LENGHT' | 'INVALID';
 
@@ -58,52 +69,22 @@ declare global {
 	}
 
 	namespace DataBase {
-		type Participation = {
+		type Participacion = {
 			id: string;
 			full_name: string;
 			instagram: string;
 			email: string;
 			phone: string;
 			questions: string;
-			answers: string | null;
 			started_datetime: string;
-			completed_datetime: string | null;
-			correct_answers: number | null;
-			completed_time_ms: number | null;
 		};
 
-		type QueryParticipationKeys = keyof Participation | 'accepted_terms';
-
-		type QueryParticipationParams = Record<QueryParticipationKeys, string>;
-
-		type FieldKeys =
-			| 'name'
-			| 'type'
-			| 'table'
-			| 'orgTable'
-			| 'database'
-			| 'orgName'
-			| 'columnLength'
-			| 'charset'
-			| 'flags';
-
-		type Field = Record<FieldKeys, string>;
-
-		type Result<T> = {
-			headers: string[];
-			fields: Field[];
-			rows: T[];
-			rowsAffected: number;
-			insertId: string;
-			size: number;
-			statement: string;
-			time: number;
+		type Participante = {
+			id: string;
+			instagram: string;
+			email: string;
+			phone: string;
 		};
-
-		type ParticipationQueryRow = Pick<
-			Participation,
-			'id' | 'questions' | 'correct_answers' | 'completed_time_ms'
-		>;
 	}
 
 	namespace Directus {
