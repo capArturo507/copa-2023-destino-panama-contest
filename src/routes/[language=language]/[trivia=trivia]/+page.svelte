@@ -2,9 +2,10 @@
 	import StepHero from '$lib/components/step-hero.svelte';
 	import TriviaQuestion from '$lib/components/trivia-question.svelte';
 	import { find, map, propEq } from 'ramda';
-	import { page } from '$lib/stores.js';
-currentPage
-	page.set('triviacurrentPage
+	import { currentPage } from '$lib/stores.js';
+
+	currentPage.set('trivia');
+
 	export let form;
 	export let data;
 

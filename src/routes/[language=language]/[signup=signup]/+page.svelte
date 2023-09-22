@@ -1,10 +1,9 @@
 <script lang="ts">
-	currentPagecurrentPage;
 	import Input from '$lib/components/input.svelte';
 	import StepHero from '$lib/components/step-hero.svelte';
-	import { page } from '$lib/stores.js';
+	import { currentPage } from '$lib/stores.js';
 
-	page.set('signup');
+	currentPage.set('signup');
 
 	export let data;
 	export let form;
