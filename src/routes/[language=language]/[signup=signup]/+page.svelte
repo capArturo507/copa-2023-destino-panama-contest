@@ -2,6 +2,7 @@
 	import Input from '$lib/components/input.svelte';
 	import StepHero from '$lib/components/step-hero.svelte';
 	import { currentPage } from '$lib/stores.js';
+	import { configurarAlerta } from '$lib/utils.js';
 
 	currentPage.set('signup');
 
@@ -94,7 +95,13 @@
 		pt: 'Participe do concurso'
 	};
 
+	let preventSpam = false;
+
 	$: ({ language } = data);
+
+	const submit = (event: SubmitEvent) => {
+		preventSpam = true;
+	};
 </script>
 
 <svelte:head>
@@ -102,7 +109,11 @@
 </svelte:head>
 <StepHero {stepNumber} {language} />
 <div class="container mx-auto my-64">
-	<form method="POST" class="grid auto-rows-auto grid-cols-1 grid-flow-row gap-16 md:gap-24">
+	<form
+		method="POST"
+		class="grid auto-rows-auto grid-cols-1 grid-flow-row gap-16 md:gap-24"
+		on:submit={submit}
+	>
 		<Input
 			name="full_name"
 			imagSource="https://cm-marketing.directus.app/assets/fb624d42-8d5e-44e1-b803-34839285e31a.svg"
@@ -156,6 +167,11 @@
 				{@html acceptInput[language]}
 			</label>
 		</div>
-		<input type="submit" value="Participar" class="button transition-colors block max-w-sm" />
+		<input
+			type="submit"
+			value={CTA[language]}
+			class="button transition-colors block max-w-sm"
+			disabled={preventSpam}
+		/>
 	</form>
 </div>

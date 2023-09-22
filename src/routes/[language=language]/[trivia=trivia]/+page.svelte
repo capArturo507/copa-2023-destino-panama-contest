@@ -3,6 +3,7 @@
 	import TriviaQuestion from '$lib/components/trivia-question.svelte';
 	import { find, map, propEq } from 'ramda';
 	import { currentPage } from '$lib/stores.js';
+	import { configurarAlerta } from '$lib/utils.js';
 
 	currentPage.set('trivia');
 
@@ -23,7 +24,19 @@
 		pt: 'Preencha seus dados'
 	};
 
+	const CTA: Record<App.SupportedLanguage, string> = {
+		es: 'Enviar mis respuestas',
+		en: 'Send my answers',
+		pt: 'Enviar minhas respostas'
+	};
+
 	$: ({ language } = data);
+
+	let preventSpam = false;
+
+	const submit = (event: SubmitEvent) => {
+		preventSpam = true;
+	};
 </script>
 
 <svelte:head>
@@ -32,15 +45,18 @@
 <StepHero {language} {stepNumber} />
 <div class="bg-backgound-lightblue py-32">
 	<div class="container mx-auto my-32">
-		<form method="POST" class="mx-auto block md:w-max">
+		<form method="POST" class="mx-auto block md:w-max" on:submit={submit}>
 			<ol class="text-grey-600">
 				{#each selectedQuestions as question, index}
 					<TriviaQuestion {question} {language} {index} />
 				{/each}
 			</ol>
-			<button type="submit" class="button button-large w-full md:max-w-xl mx-auto block lg:inline"
-				>Enviar mis respuestas</button
-			>
+			<input
+				type="submit"
+				class="button button-large w-full md:max-w-xl mx-auto block lg:inline"
+				value={CTA[language]}
+				disabled={preventSpam}
+			/>
 		</form>
 	</div>
 </div>
