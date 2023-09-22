@@ -62,10 +62,10 @@
 				class="grid grid-cols-[auto_auto] grid-flow-col gap-16 md:gap-24 justify-start my-24 md:my-32"
 			>
 				<li>
-					<a class="button" href={cta1URL}>{cta1Title}</a>
+					<a class="button button-large" href={cta1URL}>{cta1Title}</a>
 				</li>
 				<li>
-					<a class="button button-outline-primary" href={cta2URL}>{cta2Title}</a>
+					<a class="button button-tranparent button-large" href={cta2URL}>{cta2Title}</a>
 				</li>
 			</ul>
 		</nav>

@@ -22,7 +22,7 @@
 <svelte:head>
 	<title>{title[language]}</title>
 </svelte:head>
-<HomeHero video="./promo-video-es.mp4" {language} />
+<HomeHero video="./promo-video-{language}.mp4" {language} />
 
 <div
 	class="container mx-auto grid auto-rows-min my-32 sm:my-48 md:my-64 lg:my-72 gap-32 sm:gap-48 md:gap-64 lg:gap-72 text-grey-600"

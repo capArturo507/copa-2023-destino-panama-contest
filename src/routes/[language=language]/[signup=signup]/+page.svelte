@@ -88,6 +88,12 @@
 		pt: `Ao clicar nesta caixa, autorizo de forma livre, expressa e inequ&iacute;voca a Copa Airlines a coletar, utilizar, consultar e processar meus dados e informa&ccedil;&otilde;es pessoais aqui inseridos para fins do concurso 75 anos da Copa Airlines e, portanto, dou meu consentimento informado, em acordo com a legisla&ccedil;&atilde;o aplic&aacute;vel (Lei n&ordm; 13.709/2018 - Lei Geral de Prote&ccedil;&atilde;o de Dados &ndash; LGPD). Da mesma forma, autorizo a Copa Airlines a transferir e/ou transferir a suas afiliadas, subcontratadas e/ou representantes autorizados as informa&ccedil;&otilde;es, dados e documentos necess&aacute;rios para concluir o processo correspondente. Da mesma forma, declaro e reconhe&ccedil;o que li os <a	href="/pt/regras" class="text-primary-light hover:underline" target="_blank">Termos e Condi&ccedil;&otilde;es do Concurso</a> da Copa Airlines e concordo e cumpro com o que nele consta`
 	};
 
+	const CTA: Record<App.SupportedLanguage, string> = {
+		es: 'Participar',
+		en: 'Join the contest',
+		pt: 'Participe do concurso'
+	};
+
 	$: ({ language } = data);
 </script>
 

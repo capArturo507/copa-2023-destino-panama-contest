@@ -11,3 +11,6 @@ CREATE TABLE participants (
   correct_answers       TINYINT
   completed_time_ms     INT
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+
+ALTER TABLE participants MODIFY COLUMN started_datetime DATETIME(3), MODIFY COLUMN completed_datetime DATETIME(3);
