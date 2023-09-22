@@ -1,6 +1,9 @@
 import { redirect } from '@sveltejs/kit';
-import type { PageLoad } from './$types';
+import type { PageServerLoad } from './$types';
 
-export const load: PageLoad = () => {
-	throw redirect(303, '/es');
+export const load: PageServerLoad = ({ setHeaders, locals }) => {
+	setHeaders({
+		'cache-control': 'max-age=600'
+	});
+	throw redirect(303, `/${locals.language}`);
 };

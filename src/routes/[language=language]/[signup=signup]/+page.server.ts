@@ -8,8 +8,8 @@ import { getQuestionsData } from '$lib/server/get-questions';
 import { registerUser, requestStoredData } from '$lib/server/planetscale.js';
 import { generateRandomIndices } from '$lib/server/random-items.js';
 import { nowInPanamaFormatted } from '$lib/server/timezone.js';
-import { getCookieSettings } from '$lib/server/utils.js';
-import { configurarAlerta } from '$lib/utils';
+import { errorMap, getCookieSettings } from '$lib/server/utils.js';
+import { configurarAlerta, pagesURLMap } from '$lib/utils';
 import { fail, redirect, type Actions } from '@sveltejs/kit';
 import { __, join, map, nth, pipe, prop } from 'ramda';
 import { z } from 'zod';
@@ -30,15 +30,14 @@ const registrationSchema = z.object({
 /** @type {import('./$types').Actions} */
 export const actions = {
 	default: async ({ cookies, request, locals }) => {
+		const { language } = locals;
+
 		let data = Object.fromEntries(await request.formData());
 
 		try {
 			registrationSchema.parse(data);
 		} catch (error) {
-			const alert = configurarAlerta(
-				'error',
-				'Los datos que ingresaste no son válidos. por favor intenta nuevamente'
-			);
+			const alert = configurarAlerta('error', errorMap[language][400], 4);
 			console.error('Formato invalid del reporte', error, data);
 			locals.alerta = alert;
 			cookies.set(COOKIE_TOST, JSON.stringify(alert), getCookieSettings(5));
@@ -53,10 +52,7 @@ export const actions = {
 		const allQuestions = questionsRequestResponse?.data;
 
 		if (!allQuestions) {
-			const alert = configurarAlerta(
-				'error',
-				'Ocurrio un error inesperado, intenta nuevamente más tarde.'
-			);
+			const alert = configurarAlerta('error', errorMap[language][500], 4);
 			console.error('Error al buscar las preguntas, validar Directus', data);
 			locals.alerta = alert;
 			cookies.set(COOKIE_TOST, JSON.stringify(alert), getCookieSettings(5));
@@ -88,11 +84,11 @@ export const actions = {
 		};
 
 		if (registerAttempt) {
-			locals.participation = {};
-			locals.questions = [];
+			locals.participation = { data };
+			locals.questions = map(toString, questions);
 			cookies.set(COOKIE_PARTICIPATION, JSON.stringify(data), getCookieSettings(604800));
 			cookies.set(COOKIE_QUESTIONS, join(',', questions), getCookieSettings(604800));
-			throw redirect(303, '/es/trivia');
+			throw redirect(303, pagesURLMap[language].trivia);
 		}
 
 		const getDBDAta = await requestStoredData(data).catch((e) => {
@@ -102,10 +98,7 @@ export const actions = {
 
 		// TODO regresar toda la data para que no tenga que llenar el formulario 2 veces
 		if (!getDBDAta) {
-			const alert = configurarAlerta(
-				'error',
-				'Ocurrio un error inesperado, intenta nuevamente más tarde.'
-			);
+			const alert = configurarAlerta('error', errorMap[language][500], 4);
 			locals.alerta = alert;
 			cookies.set(COOKIE_TOST, JSON.stringify(alert), getCookieSettings(5));
 			return fail(500, data);
@@ -114,24 +107,18 @@ export const actions = {
 		const dbDataRows = getDBDAta.rows;
 
 		if (dbDataRows.length > 1) {
-			const alert = configurarAlerta(
-				'error',
-				'Los datos que ingresaste coinciden parcialmente con los que guardamos, solo podrás continuar si introduces los datos iniciales.'
-			);
+			const alert = configurarAlerta('error', errorMap[language][403], 6);
 			console.error('Resultados parciales', data, dbDataRows);
 			locals.alerta = alert;
 			cookies.set(COOKIE_TOST, JSON.stringify(alert), getCookieSettings(5));
-			return fail(400, {});
+			return fail(400, { full_name: data.full_name });
 		}
 
 		const resultAfterLookUp = getDBDAta.rows[0];
 
 		if (!resultAfterLookUp) {
-			const alert = configurarAlerta(
-				'error',
-				'Ocurrio un error inesperado, intenta nuevamente más tarde.'
-			);
-			console.error('No data in rowr', getDBDAta, data);
+			const alert = configurarAlerta('error', errorMap[language][500], 4);
+			console.error('No data in row', getDBDAta, data);
 			locals.alerta = alert;
 			cookies.set(COOKIE_TOST, JSON.stringify(alert), getCookieSettings(5));
 			return fail(500, data);
@@ -146,7 +133,7 @@ export const actions = {
 			);
 		}
 
-		if (resultAfterLookUp.correct_answers) throw redirect(303, '/es/participacion-completa');
+		if (resultAfterLookUp.correct_answers) throw redirect(303, pagesURLMap[language].confirmation);
 
 		locals.questions = resultAfterLookUp.questions.split(',');
 		cookies.set(
@@ -154,6 +141,6 @@ export const actions = {
 			resultAfterLookUp.questions.split(','),
 			getCookieSettings(604800)
 		);
-		throw redirect(303, '/es/trivia');
+		throw redirect(303, pagesURLMap[language].trivia);
 	}
 } satisfies Actions;

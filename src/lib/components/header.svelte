@@ -5,10 +5,14 @@
 	import FlagGS from './flag-gs.svelte';
 	import { fly } from 'svelte/transition';
 	import LanguageSolid from './language-solid.svelte';
+	import { pagesURLMap } from '$lib/utils';
+	import { currentPage } from '$lib/stores';
 
 	let showLang = false;
 
-	export let language: string;
+	export let language: App.SupportedLanguage;
+
+	$: reactive = language;
 
 	const openLang = () => {
 		showLang = !showLang;
@@ -39,11 +43,11 @@
 					transition:fly={{ y: -8 }}
 				>
 					<ul class="grid auto-rows-min grid-flow-row gap-8">
-						{#if language !== 'en'}
+						{#if reactive !== 'en'}
 							<li>
 								<a
 									class="grid auto-cols-min gap-8 grid-flow-col hover:text-primary-light"
-									href="/en"
+									href={pagesURLMap['en'][$currentPage]}
 									hreflang="en"
 								>
 									<span><FlagUS /></span>
@@ -51,11 +55,11 @@
 								</a>
 							</li>
 						{/if}
-						{#if language !== 'es'}
+						{#if reactive !== 'es'}
 							<li>
 								<a
 									class="grid auto-cols-min gap-8 grid-flow-col hover:text-primary-light"
-									href="/es"
+									href={pagesURLMap['es'][$currentPage]}
 									hreflang="es"
 								>
 									<span><FlagGS /></span>
@@ -63,11 +67,11 @@
 								</a>
 							</li>
 						{/if}
-						{#if language !== 'pt'}
+						{#if reactive !== 'pt'}
 							<li>
 								<a
 									class="grid auto-cols-min gap-8 grid-flow-col hover:text-primary-light"
-									href="/pt"
+									href={pagesURLMap['pt'][$currentPage]}
 									hreflang="pt"
 								>
 									<span><FlagBr /></span>

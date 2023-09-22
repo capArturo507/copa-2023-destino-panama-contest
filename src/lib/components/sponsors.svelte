@@ -1,5 +1,13 @@
 <script lang="ts">
-	export let title: string;
+	export let language: App.SupportedLanguage;
+
+	const data: Record<App.SupportedLanguage, string> = {
+		es: 'Patrocinadores',
+		en: 'Sponsors',
+		pt: 'Patrocinadores'
+	};
+
+	$: title = data[language];
 </script>
 
 <div>

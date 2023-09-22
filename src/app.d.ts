@@ -4,20 +4,107 @@ declare global {
 	namespace App {
 		// interface Error {}
 		interface Locals {
-			language: string;
-			contestEndDate: Date;
-			cache: CacheValue;
+			language: SupportedLanguage;
+			page: SupportedPages;
 			questions: string[];
 			participation: any;
 			alerta: Alerta | undefined;
 		}
+
 		// interface PageData {}
 		// interface Platform {}
+
+		type SupportedLanguage = 'en' | 'es' | 'pt';
+
+		type SupportedPages = 'home' | 'signup' | 'trivia' | 'confirmation' | 'rules';
+
+		type SupportedSignUpPageURL = 'sign-up' | 'registro' | 'inscrever-se';
+
+		type SupportedTriviaPageURL = 'trivia' | 'curiosidades';
+
+		type SupportedRulesPageURL = 'rules' | 'reglas' | 'regras';
+
+		type SupportedErrorCodes = 400 | 403 | 409 | 418 | 500 | 503 | 504;
+
+		type SupportedConfirmationPageURL =
+			| 'participation-complete'
+			| 'participacion-completa'
+			| 'participacao-completa';
+
+		type FooterData = {
+			copyright: string;
+			privacyUrl: string;
+			privacy: string;
+			rules: string;
+			rulesUrl: string;
+		};
+
+		type HowToParticipateData = {
+			title: string;
+			step1: string;
+			step2: string;
+			step3: string;
+		};
+
+		type PrizesData = {
+			title: string;
+			prize1: string;
+			prize2: string;
+			cta1Title: string;
+			cta1URL: string;
+			cta2Title: string;
+			cta2URL: string;
+		};
+
+		type WhatToDoInPanama = {
+			title: string;
+			description: string;
+		};
+
+		type StepData = {
+			step: string;
+			title: string;
+			description: string;
+		};
+
+		type ConfirmationData = {
+			step: string;
+			opening: string;
+			middle: string;
+			closing: string;
+			shareCTA: string;
+			shareTitle: string;
+			shareText: string;
+		};
+
+		type DateLocaleData = {
+			days: string;
+			hour: string;
+			minutes: string;
+			seconds: string;
+			milliseconds: string;
+		};
+
+		type FooterDataByLanguage = Record<SupportedLanguage, FooterData>;
+
+		type HowToParticipateDataByLanguage = Record<SupportedLanguage, HowToParticipateData>;
+
+		type PrizesDataByLanguage = Record<SupportedLanguage, PrizesData>;
+
+		type WhatToDoInPanamaDataByLanguage = Record<SupportedLanguage, WhatToDoInPanama>;
+
+		type StepDataByLanguage = Record<SupportedLanguage, StepData>;
+
+		type ConfirmationDataByLanguage = Record<SupportedLanguage, ConfirmationData>;
+
+		type DateLocaleDataByLanguage = Record<SupportedLanguage, DateLocaleData>;
+
 		type TipoAlerta = 'info' | 'error' | 'advertencia' | 'exito';
 
 		type Alerta = {
 			tipo: TipoAlerta;
 			mensaje: string;
+			seconds: number;
 		};
 
 		type AppStatus = 'sin participar' | 'participó' | 'participando' | 'participando sin preguntas';
@@ -77,6 +164,10 @@ declare global {
 			phone: string;
 			questions: string;
 			started_datetime: string;
+			completed_datetime: string;
+			answers: string;
+			correct_answers: string;
+			completed_time_ms: string;
 		};
 
 		type Participante = {

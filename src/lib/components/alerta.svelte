@@ -5,6 +5,8 @@
 
 	export let alerta: App.Alerta | undefined = undefined;
 
+	let seconds = alerta?.seconds || 4;
+
 	let show = false;
 
 	onMount(() => {
@@ -13,7 +15,7 @@
 		}, 350);
 		setTimeout(() => {
 			show = false;
-		}, 4100);
+		}, seconds * 1000);
 	});
 
 	const tipoDeAlerta = !alerta

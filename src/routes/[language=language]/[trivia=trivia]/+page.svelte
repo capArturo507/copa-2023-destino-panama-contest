@@ -2,25 +2,33 @@
 	import StepHero from '$lib/components/step-hero.svelte';
 	import TriviaQuestion from '$lib/components/trivia-question.svelte';
 	import { find, map, propEq } from 'ramda';
-	const step = 'Paso 2 de 3';
-	const title = 'Contesta las preguntas';
-	const description =
-		'Selecciona la respuesta correcta para cada una de las 10 preguntas.Tu tiempo acaba de iniciar ¡No demores!';
-
+	import { page } from '$lib/stores.js';
+currentPage
+	page.set('triviacurrentPage
 	export let form;
 	export let data;
 
-	const { allQuestions, questions, language } = data;
+	const { allQuestions, questions } = data;
 
 	const findSelectedQuestion = (id: string) => find(propEq(parseInt(id), 'id'))(allQuestions);
 
 	const selectedQuestions = map(findSelectedQuestion, questions);
+
+	const stepNumber = 2;
+
+	const title: Record<App.SupportedLanguage, string> = {
+		en: 'Fill in your details',
+		es: 'Llena tus datos',
+		pt: 'Preencha seus dados'
+	};
+
+	$: ({ language } = data);
 </script>
 
 <svelte:head>
-	<title>Contesta las preguntas</title>
+	<title>{title[language]}</title>
 </svelte:head>
-<StepHero {step} {title} {description} />
+<StepHero {language} {stepNumber} />
 <div class="bg-backgound-lightblue py-32">
 	<div class="container mx-auto my-32">
 		<form method="POST" class="mx-auto block md:w-max">

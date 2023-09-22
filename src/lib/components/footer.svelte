@@ -5,11 +5,35 @@
 	import Facebook from './facebook.svelte';
 	import LogoCopaFooter from './logo-copa-footer.svelte';
 	import LogoPanam from './logo-panam.svelte';
-	export let copyright: string;
-	export let rulesUrl: string;
-	export let rules: string;
-	export let privacyUrl: string;
-	export let privacy: string;
+
+	export let language: App.SupportedLanguage;
+
+	const data: App.FooterDataByLanguage = {
+		en: {
+			copyright: 'Copyright © 2023 Copa Airlines, Inc. All rights reserved',
+			privacyUrl: 'https://www.copaair.com/en-us/legal/terms-and-conditions/privacy-policy/',
+			privacy: 'Privacy Policy',
+			rules: 'Contest Rules',
+			rulesUrl: '/en/rules'
+		},
+		es: {
+			copyright: 'Copyright © 2023 Copa Airlines, Inc. Todos los derechos reservados',
+			privacyUrl:
+				'https://www.copaair.com/es-gs/legal/terminos-y-condiciones/politica-de-privacidad/',
+			privacy: 'Política de Privacidad',
+			rules: 'Reglas del Concurso',
+			rulesUrl: '/es/reglas'
+		},
+		pt: {
+			copyright: 'Copyright © 2023 Copa Airlines, Inc. Todos os direitos reservados',
+			privacyUrl: 'https://www.copaair.com/pt-gs/legal/termos-e-condicoes/politica-privacidade/',
+			privacy: 'Política de Privacidade',
+			rules: 'Regras do Concurso',
+			rulesUrl: '/pt/regras'
+		}
+	};
+
+	$: ({ copyright, rulesUrl, rules, privacyUrl, privacy } = data[language]);
 </script>
 
 <footer class="py-32 bg-grey-100">
