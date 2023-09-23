@@ -14,3 +14,20 @@ CREATE TABLE participants (
 
 
 ALTER TABLE participants MODIFY COLUMN started_datetime DATETIME(3), MODIFY COLUMN completed_datetime DATETIME(3);
+
+-- POSSIBLE WINNERS
+SELECT * FROM participants WHERE completed_datetime IS NOT NULL AND correct_answers IS NOT NULL AND completed_time_ms IS NOT NULL ORDER BY correct_answers DESC, completed_time_ms ASC LIMIT 10;
+
+-- REGISTERED PARTICIPANTS
+SELECT COUNT(*) FROM participants;
+
+-- ANSWERED PARTICIPANTS
+SELECT COUNT(*) FROM participants WHERE completed_datetime IS NOT NULL;
+
+-- NOT ANSWERED PARTICIPANTS
+SELECT COUNT(*) FROM participants WHERE completed_datetime IS NULL;
+
+-- ERRORS IN DB
+SELECT * FROM participants WHERE completed_datetime IS NULL AND (correct_answers IS NOT NULL OR completed_time_ms IS NOT NULL);
+SELECT * FROM participants WHERE correct_answers IS NULL AND (completed_datetime IS NOT NULL OR completed_time_ms IS NOT NULL);
+SELECT * FROM participants WHERE completed_time_ms IS NULL AND (completed_datetime IS NOT NULL OR correct_answers IS NOT NULL);

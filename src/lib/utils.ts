@@ -1,4 +1,6 @@
-import { includes } from 'ramda';
+import { PUBLIC_TIMEZONE } from '$env/static/public';
+import { utcToZonedTime } from 'date-fns-tz';
+import { includes, pipe } from 'ramda';
 
 export const isValidLanguage = (
 	suposedLanguage: string
@@ -111,3 +113,9 @@ export const formatMilliseconds = (milliseconds: number, dateLocale: App.DateLoc
 
 	return result.join(', ');
 };
+
+const now = () => new Date().toISOString();
+
+const utcInPanama = (UTC: string) => utcToZonedTime(UTC, PUBLIC_TIMEZONE);
+
+export const nowInPanama = pipe(now, utcInPanama);

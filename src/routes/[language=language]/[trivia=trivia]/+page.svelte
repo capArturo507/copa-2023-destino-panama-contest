@@ -3,14 +3,14 @@
 	import TriviaQuestion from '$lib/components/trivia-question.svelte';
 	import { find, map, propEq } from 'ramda';
 	import { currentPage } from '$lib/stores.js';
-	import { configurarAlerta } from '$lib/utils.js';
+	import Timer from '$lib/components/timer.svelte';
 
 	currentPage.set('trivia');
 
 	export let form;
 	export let data;
 
-	const { allQuestions, questions } = data;
+	const { allQuestions, questions, started_datetime } = data;
 
 	const findSelectedQuestion = (id: string) => find(propEq(parseInt(id), 'id'))(allQuestions);
 
@@ -60,3 +60,4 @@
 		</form>
 	</div>
 </div>
+<Timer {started_datetime} />

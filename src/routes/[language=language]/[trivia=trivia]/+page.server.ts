@@ -5,7 +5,6 @@ import { errorMap, getCookieSettings, validarEstadoDelApp } from '$lib/server/ut
 import { configurarAlerta, pagesURLMap } from '$lib/utils.js';
 import { fail, redirect } from '@sveltejs/kit';
 import { count, find, isEmpty, isNil, join, keys, map, pathEq, propEq, split, values } from 'ramda';
-import type { Actions } from '../../tempes/trivia/$types';
 import { nowInPanamaFormatted } from '$lib/server/timezone';
 import { z } from 'zod';
 import { differenceInMilliseconds, parseISO } from 'date-fns';
@@ -105,6 +104,7 @@ export async function load({ locals, setHeaders, cookies }) {
 	return {
 		language: locals.language,
 		allQuestions: allQuestions.data,
+		started_datetime: locals.participation.started_datetime,
 		questions
 	};
 }
