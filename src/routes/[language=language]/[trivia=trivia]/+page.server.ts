@@ -8,6 +8,7 @@ import { count, find, isEmpty, isNil, join, keys, map, pathEq, propEq, split, va
 import { nowInPanamaFormatted } from '$lib/server/timezone';
 import { z } from 'zod';
 import { differenceInMilliseconds, parseISO } from 'date-fns';
+import type { RequestEvent } from './$types.js';
 
 /** @type {import('./$types').PageServerLoad} */
 export async function load({ locals, setHeaders, cookies }) {
@@ -112,7 +113,7 @@ export async function load({ locals, setHeaders, cookies }) {
 const triviaSchema = z.record(z.string().regex(/\d+/));
 
 export const actions = {
-	default: async ({ cookies, locals, request }) => {
+	default: async ({ cookies, locals, request }: RequestEvent) => {
 		const { language } = locals;
 		const data = Object.fromEntries(await request.formData());
 		const completed_datetime = nowInPanamaFormatted();

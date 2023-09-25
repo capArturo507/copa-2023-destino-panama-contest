@@ -10,7 +10,7 @@
 	export let maxlength: number | null | undefined = undefined;
 	export let pattern: string | undefined = undefined;
 	export let patron: string | undefined = undefined;
-	export let value: string | null | undefined = undefined;
+	export let value: FormDataEntryValue | string | null | undefined = undefined;
 
 	const inputClass =
 		'border-b-2 border-b-grey-75 bg-transparent py-2 text-20/32 hover:border-b-backgound-lightblue transition-colors text-grey-700 focus:outline-none focus:border-b-primary focus:bg-backgound-lightblue invalid:focus:border-b-status-error valid:focus:border-b-status-success';

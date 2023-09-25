@@ -1,8 +1,8 @@
 <script lang="ts">
+	import { PUBLIC_RECAPTCHA_PROJECT_ID } from '$env/static/public';
 	import Input from '$lib/components/input.svelte';
 	import StepHero from '$lib/components/step-hero.svelte';
 	import { currentPage } from '$lib/stores.js';
-	import { configurarAlerta } from '$lib/utils.js';
 
 	currentPage.set('signup');
 
@@ -99,13 +99,36 @@
 
 	$: ({ language } = data);
 
-	const submit = (event: SubmitEvent) => {
+	let htmlForm: HTMLFormElement;
+
+	const handleError = (error: any) => console.log(error);
+
+	const passTokenToServer = (token: string) =>
+		fetch('/recaptcha', {
+			method: 'POST',
+			body: token,
+			headers: { 'Content-Type': 'text/html; charset=utf-8' }
+		});
+
+	const submitForm = () => htmlForm.submit();
+
+	const submit = async (event: SubmitEvent) => {
+		event.preventDefault();
 		preventSpam = true;
+		grecaptcha.enterprise
+			.execute(PUBLIC_RECAPTCHA_PROJECT_ID, { action: 'REGISTER' })
+			.then(passTokenToServer, handleError)
+			.then(submitForm, handleError);
+
+		preventSpam = false;
 	};
 </script>
 
 <svelte:head>
 	<title>{title[language]}</title>
+	<script
+		src="https://www.google.com/recaptcha/enterprise.js?render=6LfxNSsoAAAAABBhZp0iwm9yZu7d6CWc0BTYBH45&hl={language}"
+	></script>
 </svelte:head>
 <StepHero {stepNumber} {language} />
 <div class="container mx-auto my-64">
@@ -113,6 +136,7 @@
 		method="POST"
 		class="grid auto-rows-auto grid-cols-1 grid-flow-row gap-16 md:gap-24"
 		on:submit={submit}
+		bind:this={htmlForm}
 	>
 		<Input
 			name="full_name"
