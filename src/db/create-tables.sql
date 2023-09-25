@@ -15,6 +15,9 @@ CREATE TABLE participants (
 
 ALTER TABLE participants MODIFY COLUMN started_datetime DATETIME(3), MODIFY COLUMN completed_datetime DATETIME(3);
 
+ALTER TABLE participants ADD CONSTRAINT unique_phone UNIQUE(phone);
+
+
 -- POSSIBLE WINNERS
 SELECT * FROM participants WHERE completed_datetime IS NOT NULL AND correct_answers IS NOT NULL AND completed_time_ms IS NOT NULL ORDER BY correct_answers DESC, completed_time_ms ASC LIMIT 10;
 
@@ -26,6 +29,14 @@ SELECT COUNT(*) FROM participants WHERE completed_datetime IS NOT NULL;
 
 -- NOT ANSWERED PARTICIPANTS
 SELECT COUNT(*) FROM participants WHERE completed_datetime IS NULL;
+
+-- DUPLICATE PHONES
+SELECT phone, COUNT(phone) as total  FROM participants GROUP BY phone HAVING total > 1;
+
+SELECT * FROM participants A
+INNER JOIN (
+SELECT phone, COUNT(phone) as total  FROM participants GROUP BY phone HAVING total > 1) B ON A.phone = B.phone
+WHERE correct_answers is null
 
 -- ERRORS IN DB
 SELECT * FROM participants WHERE completed_datetime IS NULL AND (correct_answers IS NOT NULL OR completed_time_ms IS NOT NULL);
