@@ -1,4 +1,5 @@
-import { NODE_ENV } from '$env/static/private';
+import { CONTEST_END_DATE, NODE_ENV } from '$env/static/private';
+import { isAfter } from 'date-fns';
 import { isEmpty, isNil, isNotNil } from 'ramda';
 
 export const getCookieSettings = (seconds?: number): import('cookie').CookieSerializeOptions => {
@@ -46,4 +47,6 @@ export const errorMap: Record<App.SupportedLanguage, Record<App.SupportedErrorCo
 		503: 'Ocorreu um erro ao tentar pesquisar sua entrada. Tente novamente mais tarde.',
 		504: 'Ocorreu um erro ao tentar enviar suas respostas. Atualize seu navegador e tente novamente.'
 	}
-};
+}
+
+export const isContestOver = () => isAfter(new Date(), new Date(CONTEST_END_DATE))

@@ -27,6 +27,9 @@ SELECT COUNT(*) FROM participants;
 -- ANSWERED PARTICIPANTS
 SELECT COUNT(*) FROM participants WHERE completed_datetime IS NOT NULL;
 
+-- ANSWERED PARTICIPANTS
+SELECT COUNT(*) FROM participants WHERE completed_datetime IS NOT NULL and correct_answers = 10;
+
 -- NOT ANSWERED PARTICIPANTS
 SELECT COUNT(*) FROM participants WHERE completed_datetime IS NULL;
 
@@ -42,3 +45,8 @@ WHERE correct_answers is null
 SELECT * FROM participants WHERE completed_datetime IS NULL AND (correct_answers IS NOT NULL OR completed_time_ms IS NOT NULL);
 SELECT * FROM participants WHERE correct_answers IS NULL AND (completed_datetime IS NOT NULL OR completed_time_ms IS NOT NULL);
 SELECT * FROM participants WHERE completed_time_ms IS NULL AND (completed_datetime IS NOT NULL OR correct_answers IS NOT NULL);
+
+
+SELECT COUNT(*) FROM participants WHERE completed_datetime IS NOT NULL AND phone LIKE '+1%' AND CHAR_LENGTH(phone) = 12;
+
+SELECT COUNT(*) FROM participants WHERE completed_datetime IS NOT NULL AND phone LIKE '+55%';

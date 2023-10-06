@@ -8,7 +8,7 @@ import { getQuestionsData } from '$lib/server/get-questions';
 import { registerUser, requestStoredData } from '$lib/server/planetscale.js';
 import { generateRandomIndices } from '$lib/server/random-items.js';
 import { nowInPanamaFormatted } from '$lib/server/timezone.js';
-import { errorMap, getCookieSettings } from '$lib/server/utils.js';
+import { errorMap, getCookieSettings, isContestOver } from '$lib/server/utils.js';
 import { configurarAlerta, pagesURLMap } from '$lib/utils';
 import { fail, redirect, type Actions } from '@sveltejs/kit';
 import { __, join, map, nth, pipe, prop } from 'ramda';
@@ -30,6 +30,9 @@ const registrationSchema = z.object({
 /** @type {import('./$types').Actions} */
 export const actions = {
 	default: async ({ cookies, request, locals }) => {
+
+    if (isContestOver()) throw redirect(303, '/contest-over')
+
 		const { language } = locals;
 
 		let data = Object.fromEntries(await request.formData());
