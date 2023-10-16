@@ -7,7 +7,7 @@ export const load: PageServerLoad = ({ setHeaders, locals }) => {
 		'cache-control': 'max-age=600'
 	});
 
-  if (isContestOver()) throw redirect(303, '/contest-over')
+  //if (isContestOver()) throw redirect(303, '/contest-over')
 
 	throw redirect(303, `/${locals.language}`);
 };
