@@ -6,10 +6,9 @@ import {
 } from '$env/static/private';
 import { isValidLanguage } from '$lib/utils';
 
-let a = 1;
-
 /** @type {import('@sveltejs/kit').Handle} */
-export async function handle({ event, resolve }) {
+export async function handle({ event, resolve }) {  
+
 	const { cookies, locals } = event;
 
 	const languageFromCookie = cookies.get(COOKIE_LANGUAGE);

@@ -1,7 +1,7 @@
 import { COOKIE_PARTICIPATION, COOKIE_QUESTIONS, COOKIE_TOST } from '$env/static/private';
 import { getQuestionsData } from '$lib/server/get-questions.js';
 import { participate, requestStoredData } from '$lib/server/planetscale.js';
-import { errorMap, getCookieSettings, validarEstadoDelApp } from '$lib/server/utils.js';
+import { errorMap, getCookieSettings, isContestOver, validarEstadoDelApp } from '$lib/server/utils.js';
 import { configurarAlerta, pagesURLMap } from '$lib/utils.js';
 import { fail, redirect } from '@sveltejs/kit';
 import { count, find, isEmpty, isNil, join, keys, map, pathEq, propEq, split, values } from 'ramda';
@@ -12,6 +12,9 @@ import type { RequestEvent } from './$types.js';
 
 /** @type {import('./$types').PageServerLoad} */
 export async function load({ locals, setHeaders, cookies }) {
+
+  if (isContestOver()) throw redirect(303, '/contest-over')
+  
 	const estado = validarEstadoDelApp(locals);
 
 	const { language } = locals;
@@ -114,6 +117,9 @@ const triviaSchema = z.record(z.string().regex(/\d+/));
 
 export const actions = {
 	default: async ({ cookies, locals, request }: RequestEvent) => {
+
+    if (isContestOver()) throw redirect(303, '/contest-over')
+
 		const { language } = locals;
 		const data = Object.fromEntries(await request.formData());
 		const completed_datetime = nowInPanamaFormatted();

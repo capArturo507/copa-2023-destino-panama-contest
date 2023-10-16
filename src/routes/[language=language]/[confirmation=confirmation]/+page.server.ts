@@ -1,12 +1,15 @@
 import { COOKIE_TOST } from '$env/static/private';
 import { requestStoredData } from '$lib/server/planetscale.js';
-import { errorMap, getCookieSettings } from '$lib/server/utils.js';
+import { errorMap, getCookieSettings, isContestOver } from '$lib/server/utils.js';
 import { configurarAlerta, pagesURLMap } from '$lib/utils.js';
 import { redirect } from '@sveltejs/kit';
 import { isEmpty, isNil } from 'ramda';
 
 /** @type {import('./$types').PageServerLoad} */
 export async function load({ locals, cookies }) {
+
+  if (isContestOver()) throw redirect(303, '/contest-over')
+
 	const { language } = locals;
 	const buscarParticipacion = await requestStoredData(locals.participation).catch((error) => {
 		console.error(
